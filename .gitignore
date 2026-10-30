@@ -1,0 +1,19 @@
+# ===== 数据文件（过大，不纳入版本库）=====
+data/*.csv
+模拟数据/*.csv
+*.csv
+
+# ===== 密钥与配置 =====
+.env
+*.key
+
+# ===== 日志与临时文件 =====
+*.log
+__pycache__/
+node_modules/
+
+# ===== IDE / 系统文件 =====
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

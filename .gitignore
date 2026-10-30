@@ -17,3 +17,6 @@ node_modules/
 .vscode/
 Thumbs.db
 .DS_Store
+
+# ===== 第三方依赖 jar（环境本机自带，不入库）=====
+lib/*.jar

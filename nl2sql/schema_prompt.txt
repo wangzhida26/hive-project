@@ -1,0 +1,157 @@
+### ydsh_ads.ads_kpi_overview  -- 核心KPI总览，单行表：GMV/订单量/客单价/活跃用户/复购率等
+  stat_period string  -- 统计周期
+  gmv double  -- 有效GMV（已支付+已完成）
+  orders bigint  -- 有效订单量
+  aov double  -- 客单价 = GMV/订单量
+  active_users bigint  -- 活跃用户数（有下单行为）
+  repurchase_rate double  -- 复购率 = 下单≥2次用户/下单用户
+  avg_orders_user double  -- 人均下单次数
+  category_top string  -- GMV 第一品类
+  category_share double  -- 第一品类GMV占比
+  store_top string  -- GMV 第一门店
+  refund_rate double  -- 退款率 = 退款中订单/全部订单
+
+### ydsh_ads.ads_gmv_daily  -- 日度GMV趋势，含7日移动平均ma7、日环比dod_pct、星期weekday
+  order_dt string  -- 日期
+  gmv double  -- 当日GMV
+  orders bigint  -- 当日订单量
+  aov double  -- 当日客单价
+  ma7 double  -- 7日移动平均GMV
+  dod_pct double  -- 日环比（%）
+  weekday int  -- 星期几（Hive dayofweek：1=周日 … 7=周六）
+  is_weekend int  -- 是否周末
+
+### ydsh_ads.ads_category_sales  -- 品类销售排行（GMV/销量/订单数/占比）
+  rk int  -- 排名
+  category string  -- 品类
+  gmv double  -- GMV
+  qty bigint  -- 销量
+  orders bigint  -- 订单数
+  share_pct double  -- GMV占比（%）
+
+### ydsh_ads.ads_store_sales  -- 门店销售排行（GMV/订单数/去重用户数）
+  rk int  -- 排名
+  store_name string  -- 门店
+  province string  -- 省份
+  city string  -- 城市
+  gmv double  -- GMV
+  orders bigint  -- 订单量
+  users bigint  -- 下单用户数
+
+### ydsh_ads.ads_channel_sales  -- 渠道×支付方式销售交叉表
+  channel string  -- 渠道
+  pay_type string  -- 支付方式
+  gmv double  -- GMV
+  orders bigint  -- 订单量
+  share_pct double  -- GMV占比（%）
+
+### ydsh_ads.ads_user_value  -- 用户RFM价值分层（重要价值/重要保持/一般价值/流失预警）
+  user_id string  -- 用户ID
+  recency int  -- R：距最后下单天数（基准日 2024-12-31）
+  frequency bigint  -- F：累计订单数
+  monetary double  -- M：累计GMV
+  r_score int  -- R 得分 1-4（越大越近）
+  f_score int  -- F 得分 1-4（越大越频繁）
+  m_score int  -- M 得分 1-4（越大越高价值）
+  segment string  -- 价值分层：重要价值/重要保持/一般价值/流失预警
+
+### ydsh_dws.dws_order_1d  -- 日粒度全站汇总（GMV/订单量/有效GMV/有效订单/用户数/客单价/取消率）
+  order_dt string  -- 订单日期 yyyy-MM-dd
+  gmv double  -- 全站GMV（全部状态实付金额之和）
+  orders bigint  -- 订单量（去重 order_id）
+  paid_gmv double  -- 有效GMV（已支付+已完成）
+  paid_orders bigint  -- 有效订单量
+  refund_orders bigint  -- 退款中订单量
+  users bigint  -- 下单用户数（去重）
+  aov double  -- 客单价 = paid_gmv / paid_orders
+  cancel_rate double  -- 取消率 = 已取消订单 / 订单量
+
+### ydsh_dws.dws_category_1d  -- 日×品类汇总（明细行金额口径）
+  order_dt string  -- 订单日期
+  category string  -- 商品一级品类
+  gmv double  -- 品类GMV（明细行金额口径）
+  qty bigint  -- 销量（件）
+  orders bigint  -- 涉及订单数
+
+### ydsh_dws.dws_store_1d  -- 日×门店汇总（含省市）
+  order_dt string  -- 订单日期
+  store_id string  -- 门店ID
+  store_name string  -- 门店名称
+  province string  -- 省份
+  city string  -- 城市
+  gmv double  -- 门店GMV
+  orders bigint  -- 门店订单量
+  users bigint  -- 门店下单用户数
+
+### ydsh_dws.dws_channel_1d  -- 日×渠道×支付方式汇总
+  order_dt string  -- 订单日期
+  channel string  -- 下单渠道
+  pay_type string  -- 支付方式
+  gmv double  -- GMV
+  orders bigint  -- 订单量
+
+### ydsh_dws.dws_user_agg  -- 用户累计汇总（首末单日期/订单数/GMV/复购标记）
+  user_id string  -- 用户ID
+  first_order_dt string  -- 首单日期
+  last_order_dt string  -- 末单日期
+  orders bigint  -- 累计订单量
+  gmv double  -- 累计GMV
+  aov double  -- 用户客单价
+  repurchase_flag int  -- 复购标记：1=下单≥2次，0=单次
+
+### ydsh_dwd.dwd_order  -- 订单事实表（已过滤脏数据），按 order_dt 分区
+  order_id string  -- 订单编号（主键，已去重）
+  user_id string  -- 外键 → dim_user
+  store_id string  -- 外键 → dim_store
+  order_timestamp string  -- 下单时间 yyyy-MM-dd HH:mm:ss（date+time 合并）
+  pay_amount double  -- 实付金额（负值已修正，大额异常已过滤）
+  discount_amount double  -- 优惠金额
+  pay_type string  -- 微信支付/支付宝/银行卡/货到付款
+  order_status string  -- 待支付/已支付/已完成/已取消/退款中
+  channel string  -- APP/PC官网/小程序/门店
+  order_dt string
+  order_dt string
+
+### ydsh_dwd.dwd_order_item  -- 订单明细事实表（商品行级金额/数量）
+  item_id string
+  order_id string
+  product_id string
+  quantity int
+  unit_price double
+  discount double
+  item_amount double
+
+### ydsh_dwd.dim_user  -- 用户维度（性别/年龄/地区/会员等级）
+  user_id string  -- 用户编号（主键/SCD 维度键）
+  user_name string
+  gender string  -- 男/女/未知（标准化后）
+  age int  -- 清洗填充后年龄
+  region string  -- 省市合并：province+city
+  register_date string  -- yyyy-MM-dd（格式统一后）
+  member_level string  -- 金卡/银卡/普通/钻石会员/未知
+  phone string  -- 11 位纯数字
+  email string
+
+### ydsh_dwd.dim_product  -- 商品维度（品类/品牌/价格）
+  product_id string
+  product_name string
+  category string
+  sub_category string
+  brand string
+  price double
+  cost double
+  stock int
+  status string
+  launch_date string
+
+### ydsh_dwd.dim_store  -- 门店维度（省份/城市）
+  store_id string  -- 门店编号（主键）
+  store_name string
+  province string
+  city string
+  region string  -- 省市合并
+  district string
+  address string
+  open_date string
+  area int
+  manager string

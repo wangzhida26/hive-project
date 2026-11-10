@@ -1,0 +1,712 @@
+{
+  "ydsh_ads.ads_kpi_overview": {
+    "description": "核心KPI总览，单行表：GMV/订单量/客单价/活跃用户/复购率等",
+    "columns": [
+      {
+        "name": "stat_period",
+        "type": "string",
+        "comment": "统计周期"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "有效GMV（已支付+已完成）"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "有效订单量"
+      },
+      {
+        "name": "aov",
+        "type": "double",
+        "comment": "客单价 = GMV/订单量"
+      },
+      {
+        "name": "active_users",
+        "type": "bigint",
+        "comment": "活跃用户数（有下单行为）"
+      },
+      {
+        "name": "repurchase_rate",
+        "type": "double",
+        "comment": "复购率 = 下单≥2次用户/下单用户"
+      },
+      {
+        "name": "avg_orders_user",
+        "type": "double",
+        "comment": "人均下单次数"
+      },
+      {
+        "name": "category_top",
+        "type": "string",
+        "comment": "GMV 第一品类"
+      },
+      {
+        "name": "category_share",
+        "type": "double",
+        "comment": "第一品类GMV占比"
+      },
+      {
+        "name": "store_top",
+        "type": "string",
+        "comment": "GMV 第一门店"
+      },
+      {
+        "name": "refund_rate",
+        "type": "double",
+        "comment": "退款率 = 退款中订单/全部订单"
+      }
+    ]
+  },
+  "ydsh_ads.ads_gmv_daily": {
+    "description": "日度GMV趋势，含7日移动平均ma7、日环比dod_pct、星期weekday",
+    "columns": [
+      {
+        "name": "order_dt",
+        "type": "string",
+        "comment": "日期"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "当日GMV"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "当日订单量"
+      },
+      {
+        "name": "aov",
+        "type": "double",
+        "comment": "当日客单价"
+      },
+      {
+        "name": "ma7",
+        "type": "double",
+        "comment": "7日移动平均GMV"
+      },
+      {
+        "name": "dod_pct",
+        "type": "double",
+        "comment": "日环比（%）"
+      },
+      {
+        "name": "weekday",
+        "type": "int",
+        "comment": "星期几（Hive dayofweek：1=周日 … 7=周六）"
+      },
+      {
+        "name": "is_weekend",
+        "type": "int",
+        "comment": "是否周末"
+      }
+    ]
+  },
+  "ydsh_ads.ads_category_sales": {
+    "description": "品类销售排行（GMV/销量/订单数/占比）",
+    "columns": [
+      {
+        "name": "rk",
+        "type": "int",
+        "comment": "排名"
+      },
+      {
+        "name": "category",
+        "type": "string",
+        "comment": "品类"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "GMV"
+      },
+      {
+        "name": "qty",
+        "type": "bigint",
+        "comment": "销量"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "订单数"
+      },
+      {
+        "name": "share_pct",
+        "type": "double",
+        "comment": "GMV占比（%）"
+      }
+    ]
+  },
+  "ydsh_ads.ads_store_sales": {
+    "description": "门店销售排行（GMV/订单数/去重用户数）",
+    "columns": [
+      {
+        "name": "rk",
+        "type": "int",
+        "comment": "排名"
+      },
+      {
+        "name": "store_name",
+        "type": "string",
+        "comment": "门店"
+      },
+      {
+        "name": "province",
+        "type": "string",
+        "comment": "省份"
+      },
+      {
+        "name": "city",
+        "type": "string",
+        "comment": "城市"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "GMV"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "订单量"
+      },
+      {
+        "name": "users",
+        "type": "bigint",
+        "comment": "下单用户数"
+      }
+    ]
+  },
+  "ydsh_ads.ads_channel_sales": {
+    "description": "渠道×支付方式销售交叉表",
+    "columns": [
+      {
+        "name": "channel",
+        "type": "string",
+        "comment": "渠道"
+      },
+      {
+        "name": "pay_type",
+        "type": "string",
+        "comment": "支付方式"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "GMV"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "订单量"
+      },
+      {
+        "name": "share_pct",
+        "type": "double",
+        "comment": "GMV占比（%）"
+      }
+    ]
+  },
+  "ydsh_ads.ads_user_value": {
+    "description": "用户RFM价值分层（重要价值/重要保持/一般价值/流失预警）",
+    "columns": [
+      {
+        "name": "user_id",
+        "type": "string",
+        "comment": "用户ID"
+      },
+      {
+        "name": "recency",
+        "type": "int",
+        "comment": "R：距最后下单天数（基准日 2024-12-31）"
+      },
+      {
+        "name": "frequency",
+        "type": "bigint",
+        "comment": "F：累计订单数"
+      },
+      {
+        "name": "monetary",
+        "type": "double",
+        "comment": "M：累计GMV"
+      },
+      {
+        "name": "r_score",
+        "type": "int",
+        "comment": "R 得分 1-4（越大越近）"
+      },
+      {
+        "name": "f_score",
+        "type": "int",
+        "comment": "F 得分 1-4（越大越频繁）"
+      },
+      {
+        "name": "m_score",
+        "type": "int",
+        "comment": "M 得分 1-4（越大越高价值）"
+      },
+      {
+        "name": "segment",
+        "type": "string",
+        "comment": "价值分层：重要价值/重要保持/一般价值/流失预警"
+      }
+    ]
+  },
+  "ydsh_dws.dws_order_1d": {
+    "description": "日粒度全站汇总（GMV/订单量/有效GMV/有效订单/用户数/客单价/取消率）",
+    "columns": [
+      {
+        "name": "order_dt",
+        "type": "string",
+        "comment": "订单日期 yyyy-MM-dd"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "全站GMV（全部状态实付金额之和）"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "订单量（去重 order_id）"
+      },
+      {
+        "name": "paid_gmv",
+        "type": "double",
+        "comment": "有效GMV（已支付+已完成）"
+      },
+      {
+        "name": "paid_orders",
+        "type": "bigint",
+        "comment": "有效订单量"
+      },
+      {
+        "name": "refund_orders",
+        "type": "bigint",
+        "comment": "退款中订单量"
+      },
+      {
+        "name": "users",
+        "type": "bigint",
+        "comment": "下单用户数（去重）"
+      },
+      {
+        "name": "aov",
+        "type": "double",
+        "comment": "客单价 = paid_gmv / paid_orders"
+      },
+      {
+        "name": "cancel_rate",
+        "type": "double",
+        "comment": "取消率 = 已取消订单 / 订单量"
+      }
+    ]
+  },
+  "ydsh_dws.dws_category_1d": {
+    "description": "日×品类汇总（明细行金额口径）",
+    "columns": [
+      {
+        "name": "order_dt",
+        "type": "string",
+        "comment": "订单日期"
+      },
+      {
+        "name": "category",
+        "type": "string",
+        "comment": "商品一级品类"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "品类GMV（明细行金额口径）"
+      },
+      {
+        "name": "qty",
+        "type": "bigint",
+        "comment": "销量（件）"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "涉及订单数"
+      }
+    ]
+  },
+  "ydsh_dws.dws_store_1d": {
+    "description": "日×门店汇总（含省市）",
+    "columns": [
+      {
+        "name": "order_dt",
+        "type": "string",
+        "comment": "订单日期"
+      },
+      {
+        "name": "store_id",
+        "type": "string",
+        "comment": "门店ID"
+      },
+      {
+        "name": "store_name",
+        "type": "string",
+        "comment": "门店名称"
+      },
+      {
+        "name": "province",
+        "type": "string",
+        "comment": "省份"
+      },
+      {
+        "name": "city",
+        "type": "string",
+        "comment": "城市"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "门店GMV"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "门店订单量"
+      },
+      {
+        "name": "users",
+        "type": "bigint",
+        "comment": "门店下单用户数"
+      }
+    ]
+  },
+  "ydsh_dws.dws_channel_1d": {
+    "description": "日×渠道×支付方式汇总",
+    "columns": [
+      {
+        "name": "order_dt",
+        "type": "string",
+        "comment": "订单日期"
+      },
+      {
+        "name": "channel",
+        "type": "string",
+        "comment": "下单渠道"
+      },
+      {
+        "name": "pay_type",
+        "type": "string",
+        "comment": "支付方式"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "GMV"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "订单量"
+      }
+    ]
+  },
+  "ydsh_dws.dws_user_agg": {
+    "description": "用户累计汇总（首末单日期/订单数/GMV/复购标记）",
+    "columns": [
+      {
+        "name": "user_id",
+        "type": "string",
+        "comment": "用户ID"
+      },
+      {
+        "name": "first_order_dt",
+        "type": "string",
+        "comment": "首单日期"
+      },
+      {
+        "name": "last_order_dt",
+        "type": "string",
+        "comment": "末单日期"
+      },
+      {
+        "name": "orders",
+        "type": "bigint",
+        "comment": "累计订单量"
+      },
+      {
+        "name": "gmv",
+        "type": "double",
+        "comment": "累计GMV"
+      },
+      {
+        "name": "aov",
+        "type": "double",
+        "comment": "用户客单价"
+      },
+      {
+        "name": "repurchase_flag",
+        "type": "int",
+        "comment": "复购标记：1=下单≥2次，0=单次"
+      }
+    ]
+  },
+  "ydsh_dwd.dwd_order": {
+    "description": "订单事实表（已过滤脏数据），按 order_dt 分区",
+    "columns": [
+      {
+        "name": "order_id",
+        "type": "string",
+        "comment": "订单编号（主键，已去重）"
+      },
+      {
+        "name": "user_id",
+        "type": "string",
+        "comment": "外键 → dim_user"
+      },
+      {
+        "name": "store_id",
+        "type": "string",
+        "comment": "外键 → dim_store"
+      },
+      {
+        "name": "order_timestamp",
+        "type": "string",
+        "comment": "下单时间 yyyy-MM-dd HH:mm:ss（date+time 合并）"
+      },
+      {
+        "name": "pay_amount",
+        "type": "double",
+        "comment": "实付金额（负值已修正，大额异常已过滤）"
+      },
+      {
+        "name": "discount_amount",
+        "type": "double",
+        "comment": "优惠金额"
+      },
+      {
+        "name": "pay_type",
+        "type": "string",
+        "comment": "微信支付/支付宝/银行卡/货到付款"
+      },
+      {
+        "name": "order_status",
+        "type": "string",
+        "comment": "待支付/已支付/已完成/已取消/退款中"
+      },
+      {
+        "name": "channel",
+        "type": "string",
+        "comment": "APP/PC官网/小程序/门店"
+      },
+      {
+        "name": "order_dt",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "order_dt",
+        "type": "string",
+        "comment": ""
+      }
+    ]
+  },
+  "ydsh_dwd.dwd_order_item": {
+    "description": "订单明细事实表（商品行级金额/数量）",
+    "columns": [
+      {
+        "name": "item_id",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "order_id",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "product_id",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "quantity",
+        "type": "int",
+        "comment": ""
+      },
+      {
+        "name": "unit_price",
+        "type": "double",
+        "comment": ""
+      },
+      {
+        "name": "discount",
+        "type": "double",
+        "comment": ""
+      },
+      {
+        "name": "item_amount",
+        "type": "double",
+        "comment": ""
+      }
+    ]
+  },
+  "ydsh_dwd.dim_user": {
+    "description": "用户维度（性别/年龄/地区/会员等级）",
+    "columns": [
+      {
+        "name": "user_id",
+        "type": "string",
+        "comment": "用户编号（主键/SCD 维度键）"
+      },
+      {
+        "name": "user_name",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "gender",
+        "type": "string",
+        "comment": "男/女/未知（标准化后）"
+      },
+      {
+        "name": "age",
+        "type": "int",
+        "comment": "清洗填充后年龄"
+      },
+      {
+        "name": "region",
+        "type": "string",
+        "comment": "省市合并：province+city"
+      },
+      {
+        "name": "register_date",
+        "type": "string",
+        "comment": "yyyy-MM-dd（格式统一后）"
+      },
+      {
+        "name": "member_level",
+        "type": "string",
+        "comment": "金卡/银卡/普通/钻石会员/未知"
+      },
+      {
+        "name": "phone",
+        "type": "string",
+        "comment": "11 位纯数字"
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "comment": ""
+      }
+    ]
+  },
+  "ydsh_dwd.dim_product": {
+    "description": "商品维度（品类/品牌/价格）",
+    "columns": [
+      {
+        "name": "product_id",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "product_name",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "category",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "sub_category",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "brand",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "price",
+        "type": "double",
+        "comment": ""
+      },
+      {
+        "name": "cost",
+        "type": "double",
+        "comment": ""
+      },
+      {
+        "name": "stock",
+        "type": "int",
+        "comment": ""
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "launch_date",
+        "type": "string",
+        "comment": ""
+      }
+    ]
+  },
+  "ydsh_dwd.dim_store": {
+    "description": "门店维度（省份/城市）",
+    "columns": [
+      {
+        "name": "store_id",
+        "type": "string",
+        "comment": "门店编号（主键）"
+      },
+      {
+        "name": "store_name",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "province",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "city",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "region",
+        "type": "string",
+        "comment": "省市合并"
+      },
+      {
+        "name": "district",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "address",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "open_date",
+        "type": "string",
+        "comment": ""
+      },
+      {
+        "name": "area",
+        "type": "int",
+        "comment": ""
+      },
+      {
+        "name": "manager",
+        "type": "string",
+        "comment": ""
+      }
+    ]
+  }
+}

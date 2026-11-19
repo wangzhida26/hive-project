@@ -1,6 +1,6 @@
 # 云购生活新零售企业——企业级数据仓库与经营分析可视化系统
 
-> 企业项目实战实训 · 第 1 周：项目启动 · 环境搭建 · Git 基础 · 数据导入 · 数据清洗（一）
+> 企业项目实战实训 · 已完成第 1~3 周：环境搭建 · 数据导入与清洗 · 数仓分层建模 · KPI 指标 · 预测建模 · NL2SQL
 
 ## 一、团队信息
 - **队名**：___200A_____（请填写你的队名）
@@ -31,7 +31,8 @@
 | 周次 | 主题 | 关键产出 |
 |------|------|----------|
 | 第 1 周 | 项目启动 · 环境搭建 · Git 基础 · 数据导入 · 数据清洗（一） | README、环境笔记、ODS 6 张表、质量预评估表、缺失值/去重脚本、AI 协同日志 |
-| 第 2 周及以后 | 数据清洗（二）→ 数仓分层建模 → 指标计算 → 可视化 → 答辩 | 按课程后续任务书执行 |
+| 第 2 周 | 数据清洗（二）· 数仓分层建模 · 探索性分析 | STG 三层清洗管道、DWD 星型模型（14,696 单 / 366 分区）、质量对比报告、架构设计文档、EDA 简报 |
+| 第 3 周 | DWS/ADS · KPI · 预测建模 · AI 协同（NL2SQL）· Git 协同 | DWS 五粒度汇总、ADS 六张应用表、KPI 结果表、预测建模报告、NL2SQL 双引擎、AI 洞察与反思、PR/Review/Issue 记录 |
 
 ## 五、技术栈
 
@@ -45,18 +46,41 @@
 
 ```
 ydsh-dw/
-├── README.md                    # 本文件
-├── .gitignore                   # 忽略数据/密钥/日志文件
-├── docker-compose.yml           # Hive + MySQL 编排
-├── data/                        # 模拟数据 CSV（不入库，.gitignore 已忽略）
+├── README.md                        # 本文件
+├── .gitignore                       # 忽略数据/密钥/日志文件
+├── docker-compose.yml               # Hive + MySQL 编排
+├── data/                            # 模拟数据 CSV（不入库）
 ├── docs/
-│   ├── 环境搭建笔记.md           # 环境搭建过程、问题与解决
-│   └── AI协同日志.md             # 每周 AI 协同记录（≥5 条）
-└── sql/
-    ├── ods/create_ods.sql       # ODS 层 6 张表建表脚本
-    ├── ods/load_ods.sql         # 6 张表数据导入与行数校验脚本
-    ├── quality/quality_check.sql# 五维度质量预评估 SQL
-    └── clean/
-        ├── clean_missing.sql    # 缺失值诊断与处理（CTAS → dwd_user）
-        └── clean_dup.sql        # 重复值检测与 ROW_NUMBER 去重（→ dwd_order）
+│   ├── 环境搭建笔记.docx             # 环境搭建过程、问题与解决
+│   ├── 数据质量对比报告.docx         # 第2周：清洗前后五维对比
+│   ├── 数仓架构设计文档.docx         # 第2周：四层架构与星型模型
+│   ├── 探索性分析简报.docx           # 第2周：EDA 十组查询结论
+│   ├── 预测建模分析报告.docx         # 第3周：3 模型 + 2 基线，MAE/MAPE 与边界
+│   ├── AI智能洞察与反思.docx         # 第3周：11-06 骤降归因、自动摘要、AI 反思
+│   ├── KPI指标结果表.xlsx            # 第3周：8 个 sheet 的核心指标结果
+│   ├── 第2周_AI协同日志.md
+│   ├── 第3周_AI协同日志.md
+│   ├── 第3周_Issue与CodeReview记录.md # 第3周：PR / Review / Issue / 冲突解决留痕
+│   └── Git提交历史.txt
+├── sql/
+│   ├── ods/        create_ods.sql / load_ods.sql
+│   ├── quality/    quality_check.sql / quality_compare.sql
+│   ├── clean/      clean_missing.sql / clean_dup.sql
+│   │               clean_enum.sql / clean_abnormal_format.sql / clean_split_merge.sql
+│   ├── dwd/        create_dwd.sql / load_dwd.sql（星型模型 + 366 动态分区）
+│   ├── dws/        create_dws.sql / load_dws.sql（五粒度汇总）
+│   ├── ads/        create_ads.sql / load_ads.sql（六张应用表）
+│   └── analysis/   eda.sql / attribution_1106.sql
+├── analysis/                        # 第3周 Python 建模
+│   ├── forecast_gmv.py              # 时间序列预测（3 模型 + 2 基线）
+│   ├── build_kpi_sheet.py           # 导出 KPI 结果表 Excel
+│   ├── data/                        # 从 Hive 导出的取数快照
+│   └── out/                         # 图表、metrics.json、7 天预测
+└── nl2sql/                          # 第3周 NL2SQL 接口
+    ├── schema_extractor.py          # 自动抽取表结构与中文注释
+    ├── nl2sql_core.py               # LLM + 规则双引擎、SQL 护栏、执行器
+    ├── nl2sql_langchain.py          # LangChain LCEL 链路
+    ├── llm_ping.py                  # 大模型连通性验证
+    ├── test_nl2sql.py               # 12 问批量实测
+    └── out/nl2sql_run_log.md        # 实测运行日志
 ```

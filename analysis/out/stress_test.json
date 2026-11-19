@@ -1,0 +1,66 @@
+[
+ {
+  "query": "A-ODS文本全扫(无分区)",
+  "mode": "serial",
+  "n": 3,
+  "avg": 5.37,
+  "max": 6.95,
+  "min": 4.36
+ },
+ {
+  "query": "B0-DWD_ORC全扫(无分区裁剪)",
+  "mode": "serial",
+  "n": 3,
+  "avg": 5.52,
+  "max": 5.74,
+  "min": 5.3
+ },
+ {
+  "query": "B-DWD_ORC分区裁剪(12月)",
+  "mode": "serial",
+  "n": 3,
+  "avg": 4.9,
+  "max": 5.53,
+  "min": 4.59
+ },
+ {
+  "query": "B-DWD_ORC分区裁剪(12月)",
+  "mode": "concurrent-1",
+  "n": 3,
+  "avg": 4.5,
+  "max": 4.72,
+  "min": 4.38,
+  "wall_total": 13.54,
+  "throughput_qps": 0.22
+ },
+ {
+  "query": "B-DWD_ORC分区裁剪(12月)",
+  "mode": "concurrent-2",
+  "n": 6,
+  "avg": 5.04,
+  "max": 5.59,
+  "min": 4.77,
+  "wall_total": 15.48,
+  "throughput_qps": 0.39
+ },
+ {
+  "query": "B-DWD_ORC分区裁剪(12月)",
+  "mode": "concurrent-4",
+  "n": 12,
+  "avg": 5.93,
+  "max": 6.82,
+  "min": 5.3,
+  "wall_total": 18.57,
+  "throughput_qps": 0.65
+ },
+ {
+  "query": "B-DWD_ORC分区裁剪(12月)",
+  "mode": "concurrent-8",
+  "n": 24,
+  "avg": 8.65,
+  "max": 11.15,
+  "min": 6.57,
+  "wall_total": 28.36,
+  "throughput_qps": 0.85
+ }
+]

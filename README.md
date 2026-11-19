@@ -1,6 +1,6 @@
 # 云购生活新零售企业——企业级数据仓库与经营分析可视化系统
 
-> 企业项目实战实训 · 已完成第 1~3 周：环境搭建 · 数据导入与清洗 · 数仓分层建模 · KPI 指标 · 预测建模 · NL2SQL
+> 企业项目实战实训 · 已完成第 1~4 周：环境搭建 · 数据清洗 · 分层建模 · KPI · 预测建模 · NL2SQL · 可视化（Superset/ECharts/Streamlit）· Docker 一键部署
 
 ## 一、团队信息
 - **队名**：___200A_____（请填写你的队名）
@@ -33,6 +33,7 @@
 | 第 1 周 | 项目启动 · 环境搭建 · Git 基础 · 数据导入 · 数据清洗（一） | README、环境笔记、ODS 6 张表、质量预评估表、缺失值/去重脚本、AI 协同日志 |
 | 第 2 周 | 数据清洗（二）· 数仓分层建模 · 探索性分析 | STG 三层清洗管道、DWD 星型模型（14,696 单 / 366 分区）、质量对比报告、架构设计文档、EDA 简报 |
 | 第 3 周 | DWS/ADS · KPI · 预测建模 · AI 协同（NL2SQL）· Git 协同 | DWS 五粒度汇总、ADS 六张应用表、KPI 结果表、预测建模报告、NL2SQL 双引擎、AI 洞察与反思、PR/Review/Issue 记录 |
+| 第 4 周 | 可视化（Superset + ECharts）· Streamlit 问答 · Docker 一键部署 · 压测 | Superset 仪表板（6 图表+筛选器）、ECharts 数据大屏（scale 自适应）、Streamlit NL2SQL 闭环、6 服务 compose 编排、部署手册/API 指南、压力测试记录 |
 
 ## 五、技术栈
 
@@ -60,6 +61,9 @@ ydsh-dw/
 │   ├── KPI指标结果表.xlsx            # 第3周：8 个 sheet 的核心指标结果
 │   ├── 第2周_AI协同日志.md
 │   ├── 第3周_AI协同日志.md
+│   ├── 第4周_AI协同日志.md
+│   ├── 第4周_压力测试记录.md
+│   ├── 部署手册.docx / API配置指南.docx
 │   ├── 第3周_Issue与CodeReview记录.md # 第3周：PR / Review / Issue / 冲突解决留痕
 │   └── Git提交历史.txt
 ├── sql/
@@ -71,9 +75,19 @@ ydsh-dw/
 │   ├── dws/        create_dws.sql / load_dws.sql（五粒度汇总）
 │   ├── ads/        create_ads.sql / load_ads.sql（六张应用表）
 │   └── analysis/   eda.sql / attribution_1106.sql
-├── analysis/                        # 第3周 Python 建模
+├── app/                             # 第4周 Streamlit 问答应用（容器化）
+│   ├── app.py                       # 提问→SQL→表格+自动图表
+│   ├── Dockerfile / requirements.txt
+├── screen/                          # 第4周 ECharts 数据大屏
+│   ├── 云购生活数据大屏.html        # 单文件成品（含实测截图 大屏截图.png）
+│   ├── build_screen.py              # 数据装配脚本
+│   └── vendor/                      # echarts + 合规中国地图 GeoJSON
+├── analysis/                        # 第3/4周 Python 建模与部署工具
 │   ├── forecast_gmv.py              # 时间序列预测（3 模型 + 2 基线）
 │   ├── build_kpi_sheet.py           # 导出 KPI 结果表 Excel
+│   ├── mirror_to_mysql.py           # Hive→MySQL 报表镜像（12 表+省份坐标）
+│   ├── superset_setup.py            # Superset REST 自动配置
+│   ├── stress_test.py               # 查询优化对比与并发压测
 │   ├── data/                        # 从 Hive 导出的取数快照
 │   └── out/                         # 图表、metrics.json、7 天预测
 └── nl2sql/                          # 第3周 NL2SQL 接口

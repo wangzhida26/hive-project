@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>云购生活 · 经营数据大屏</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:100%; height:100%; background:#060d1f; overflow:hidden; }
+  #stage { width:100%; height:100%; position:relative; }
+  #screen { width:1920px; height:1080px; position:absolute; left:50%; top:50%;
+            transform-origin:center center; transform:translate(-50%,-50%);
+            background:radial-gradient(1200px 700px at 50% -8%, #12325e 0%, #0a1128 55%, #060d1f 100%);
+            color:#d8ecff; font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+            display:flex; flex-direction:column; padding:0 24px 12px; }
+  header { height:84px; display:flex; align-items:center; position:relative; flex:none; }
+  header h1 { position:absolute; left:50%; transform:translateX(-50%); font-size:34px; letter-spacing:6px;
+              background:linear-gradient(180deg,#eaf6ff,#5fc4ff); -webkit-background-clip:text; background-clip:text; color:transparent;
+              text-shadow:0 0 30px rgba(45,212,255,.35); }
+  .h-left,.h-right { font-size:16px; color:#7fa8cc; letter-spacing:2px; width:300px; }
+  .h-right { text-align:right; font-variant-numeric:tabular-nums; }
+  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; background:#2ee6a8;
+         box-shadow:0 0 10px #2ee6a8; margin-right:8px; }
+  #kpi { height:112px; display:grid; grid-template-columns:repeat(6,1fr); gap:16px; flex:none; margin-bottom:14px; }
+  .kcard { border:1px solid rgba(80,160,255,.22); border-radius:12px; padding:16px 22px;
+           background:linear-gradient(160deg, rgba(23,52,96,.55), rgba(12,26,52,.35));
+           position:relative; overflow:hidden; }
+  .kcard::before { content:''; position:absolute; left:0; top:0; width:100%; height:3px; background:var(--c); opacity:.9; }
+  .kcard::after { content:''; position:absolute; right:-30px; bottom:-30px; width:90px; height:90px;
+                  border-radius:50%; background:var(--c); opacity:.08; }
+  .kt { font-size:17px; color:#8fb3d9; margin-bottom:8px; }
+  .kv { font-size:30px; font-weight:700; color:var(--c); font-variant-numeric:tabular-nums;
+        text-shadow:0 0 18px color-mix(in srgb, var(--c) 45%, transparent); }
+  main { flex:1; display:grid; grid-template-columns:480px 1fr 480px; gap:16px; min-height:0; }
+  .col { display:grid; grid-template-rows:47% 53%; gap:16px; min-height:0; }
+  .col.mid { grid-template-rows:62% 38%; }
+  .col:last-child { grid-template-rows:32% 34% 34%; }
+  .panel { border:1px solid rgba(80,160,255,.18); border-radius:12px; background:rgba(14,34,66,.42);
+           display:flex; flex-direction:column; padding:14px 16px 8px; min-height:0; }
+  .panel h2 { font-size:19px; color:#bfe0ff; font-weight:600; letter-spacing:2px; padding-left:12px;
+              border-left:4px solid #2dd4ff; margin-bottom:6px; flex:none; }
+  .chart { flex:1; min-height:0; }
+  footer { flex:none; height:34px; display:flex; align-items:center; justify-content:center;
+           font-size:15px; color:#5f83a8; letter-spacing:1px; }
+</style>
+<!--ECHARTS_JS-->
+</head>
+<body>
+<div id="stage">
+  <div id="screen">
+    <header>
+      <div class="h-left"><span class="dot"></span>YDGOSHOP DATAV</div>
+      <h1>云购生活 · 新零售经营数据大屏</h1>
+      <div class="h-right" id="clock">--</div>
+    </header>
+    <div id="kpi"></div>
+    <main>
+      <div class="col">
+        <section class="panel"><h2>全年 GMV 走势（7 日均线）</h2><div id="c-line" class="chart"></div></section>
+        <section class="panel"><h2>品类销售对比</h2><div id="c-bar" class="chart"></div></section>
+      </div>
+      <div class="col mid">
+        <section class="panel"><h2>区域分布（省份 GMV）</h2><div id="c-map" class="chart"></div></section>
+        <section class="panel"><h2>时段 × 品类 消费热力</h2><div id="c-heat" class="chart"></div></section>
+      </div>
+      <div class="col">
+        <section class="panel"><h2>支付方式占比</h2><div id="c-pie" class="chart"></div></section>
+        <section class="panel"><h2>省份 GMV × 订单量相关性</h2><div id="c-scatter" class="chart"></div></section>
+        <section class="panel"><h2>门店 Top8 排行</h2><div id="c-top" class="chart"></div></section>
+      </div>
+    </main>
+    <footer>数据来源：云购生活数据仓库（Hive / ADS 层） · 2024-01-01 ~ 2024-12-31 · Apache ECharts 可视化</footer>
+  </div>
+</div>
+<!--CHINA_JSON-->
+<!--DATA_JS-->
+<script>
+/* ---------- 自适应：1920×1080 设计稿整体 scale 缩放 ---------- */
+function resize() {
+  const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  const stage = document.getElementById('screen');
+  stage.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+  window.__screenScale = s;
+}
+window.addEventListener('resize', () => { resize(); charts.forEach(c => c.resize()); });
+window.addEventListener('load', resize);
+
+/* ---------- 时钟 ---------- */
+setInterval(() => {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleString('zh-CN', { year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit' });
+}, 1000);
+
+const charts = [];
+function mk(id, opt) {
+  const c = echarts.init(document.getElementById(id), null, { renderer: 'canvas' });
+  c.setOption(opt); charts.push(c); return c;
+}
+
+const D = window.SCREEN_DATA;
+const C = { cyan:'#2dd4ff', purple:'#7c6cff', orange:'#ff9f43', green:'#2ee6a8', pink:'#ff5c7a', blue:'#4f8cff' };
+const AXIS = { axisLine:{lineStyle:{color:'rgba(120,180,255,.25)'}}, axisLabel:{color:'#8fb3d9', fontSize:15}, splitLine:{lineStyle:{color:'rgba(120,180,255,.10)'}} };
+const TIP = { backgroundColor:'rgba(8,20,40,.92)', borderColor:'rgba(120,180,255,.35)', textStyle:{color:'#d8ecff', fontSize:15} };
+
+/* KPI 卡片 */
+(function () {
+  const k = D.kpi;
+  const cards = [
+    { t:'年度 GMV',        v:'¥' + (k.gmv/1e4).toFixed(1) + ' 万', c:C.cyan },
+    { t:'有效订单',        v:k.orders.toLocaleString() + ' 单',     c:C.purple },
+    { t:'客单价',          v:'¥' + k.aov.toLocaleString(),          c:C.orange },
+    { t:'活跃用户',        v:k.users + ' 人',                       c:C.green },
+    { t:'人均订单',        v:k.avg_orders_user + ' 单/人',          c:C.blue },
+    { t:'退款率',          v:(k.refund_rate*100).toFixed(2) + '%',  c:C.pink },
+  ];
+  document.getElementById('kpi').innerHTML = cards.map(c =>
+    `<div class="kcard" style="--c:${c.c}"><div class="kt">${c.t}</div><div class="kv">${c.v}</div></div>`).join('');
+})();
+
+/* 1. GMV 走势 折线 */
+mk('c-line', {
+  tooltip: Object.assign({ trigger:'axis' }, TIP),
+  legend: { textStyle:{color:'#8fb3d9', fontSize:15}, top:0, right:10, itemWidth:14 },
+  grid: { left:64, right:24, top:36, bottom:34 },
+  xAxis: Object.assign({ type:'category', data:D.daily.map(d=>d.dt.slice(5)), boundaryGap:false }, AXIS),
+  yAxis: Object.assign({ type:'value', name:'GMV(元)', nameTextStyle:{color:'#8fb3d9'} }, AXIS),
+  series: [
+    { name:'日 GMV', type:'line', data:D.daily.map(d=>d.gmv), symbol:'none', lineStyle:{width:2, color:C.cyan},
+      areaStyle:{ color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(45,212,255,.35)'},{offset:1,color:'rgba(45,212,255,0)'}]) } },
+    { name:'7日均线', type:'line', data:D.daily.map(d=>d.ma7), symbol:'none', lineStyle:{width:2.5, color:C.orange, type:'dashed'} },
+  ],
+});
+
+/* 2. 品类 柱状 */
+mk('c-bar', {
+  tooltip: Object.assign({ trigger:'axis' }, TIP),
+  grid: { left:96, right:30, top:20, bottom:34 },
+  xAxis: Object.assign({ type:'value', name:'GMV(万)' }, AXIS),
+  yAxis: Object.assign({ type:'category', data:D.category.map(c=>c.name).reverse() }, AXIS),
+  series: [{
+    type:'bar', data:D.category.map(c=>(c.gmv/1e4).toFixed(1)).reverse(), barWidth:14,
+    itemStyle:{ borderRadius:[0,7,7,0], color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#1b6fd8'},{offset:1,color:C.cyan}]) },
+    label:{ show:true, position:'right', color:'#bcd8f5', fontSize:14, formatter:'{c}万' },
+  }],
+});
+
+/* 3. 区域地图 */
+(function () {
+  echarts.registerMap('china', window.CHINA_GEO);
+  const mx = { min: 0 };
+  D.province.forEach(p => { if (p.gmv > mx.max || !mx.max) mx.max = p.gmv; });
+  mk('c-map', {
+    tooltip: Object.assign({ trigger:'item',
+      formatter: p => p.data ? `${p.name}<br/>GMV ¥${(p.data.value/1e4).toFixed(1)}万 · ${p.data.orders}单 · ${p.data.stores}店` : p.name }, TIP),
+    visualMap: { min:mx.min, max:mx.max, left:20, bottom:16, calculable:true, text:['高','低'],
+      textStyle:{color:'#8fb3d9', fontSize:14},
+      inRange:{ color:['#123a6b','#1f6fd0','#2dd4ff','#7cf3e0'] } },
+    series: [{
+      type:'map', map:'china', roam:false,
+      itemStyle:{ borderColor:'rgba(130,200,255,.5)', borderWidth:1, areaColor:'#0e2a52' },
+      emphasis:{ label:{color:'#fff'}, itemStyle:{ areaColor:'#2dd4ff' } },
+      select:{ disabled:true },
+      label:{ show:false },
+      data: D.province.map(p => ({ name:p.name, value:p.gmv, orders:p.orders, stores:p.stores })),
+    }],
+  });
+})();
+
+/* 4. 时段×品类 热力 */
+mk('c-heat', {
+  tooltip: Object.assign({ position:'inside',
+    formatter: p => `${p.value[1]} · ${p.value[0]}时<br/>GMV ¥${p.value[2].toLocaleString()}` }, TIP),
+  grid: { left:96, right:20, top:16, bottom:44 },
+  xAxis: Object.assign({ type:'category', data:Array.from({length:24},(_,i)=>i+'时'), splitArea:{show:false} }, AXIS),
+  yAxis: Object.assign({ type:'category', data:D.categories }, AXIS),
+  visualMap: { min:0, max:D.heatMax, show:false, inRange:{ color:['#0d2c55','#1f6fd0','#2dd4ff','#ffd166','#ff5c7a'] } },
+  series: [{
+    type:'heatmap', data:D.heat.map(h=>[h.hr, h.category, h.gmv]),
+    itemStyle:{ borderColor:'rgba(0,0,0,.25)', borderWidth:1 },
+    emphasis:{ itemStyle:{ shadowBlur:8, shadowColor:'rgba(0,0,0,.4)' } },
+  }],
+});
+
+/* 5. 支付方式 饼图 */
+mk('c-pie', {
+  tooltip: Object.assign({ trigger:'item', formatter:'{b}<br/>¥{c}万（{d}%）' }, TIP),
+  legend: { bottom:0, textStyle:{color:'#8fb3d9', fontSize:15}, itemWidth:14 },
+  series: [{
+    type:'pie', radius:['42%','68%'], center:['50%','44%'],
+    itemStyle:{ borderColor:'#0a1128', borderWidth:3 },
+    label:{ color:'#bcd8f5', fontSize:14, formatter:'{b}\n{d}%' },
+    data: D.pay.map((p,i) => ({ name:p.name, value:(p.gmv/1e4).toFixed(1),
+      itemStyle:{ color:[C.cyan,C.purple,C.orange,C.green,C.pink,C.blue][i%6] } })),
+  }],
+});
+
+/* 6. 省份 GMV×订单 散点（相关性） */
+mk('c-scatter', {
+  tooltip: Object.assign({ formatter: p => `${p.data[3]}<br/>GMV ¥${(p.data[0]/1e4).toFixed(1)}万 · ${p.data[1]}单` }, TIP),
+  grid: { left:76, right:30, top:30, bottom:40 },
+  xAxis: Object.assign({ type:'value', name:'GMV(万)', nameTextStyle:{color:'#8fb3d9'} }, AXIS),
+  yAxis: Object.assign({ type:'value', name:'订单量', nameTextStyle:{color:'#8fb3d9'} }, AXIS),
+  series: [{
+    type:'scatter',
+    data: D.province.map(p => [(p.gmv/1e4), p.orders, p.stores, p.name]),
+    symbolSize: v => Math.max(12, Math.sqrt(v[0])*2.2),
+    itemStyle:{ color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:C.purple},{offset:1,color:C.cyan}]), opacity:.85 },
+    label:{ show:true, formatter:p=>p.data[3], position:'top', color:'#9fc4ea', fontSize:12 },
+    markLine: { silent:true, symbol:'none',
+      lineStyle:{color:'rgba(124,108,255,.4)', type:'dashed'},
+      data:[{type:'average', xAxis:'average'}, {type:'average', yAxis:'average'}],
+      label:{ color:'#7c6cff', fontSize:12 } },
+  }],
+});
+
+/* 7. 门店 TopN 排行 */
+mk('c-top', {
+  tooltip: Object.assign({ trigger:'axis' }, TIP),
+  grid: { left:150, right:56, top:10, bottom:10 },
+  xAxis: Object.assign({ type:'value', show:false }, AXIS),
+  yAxis: Object.assign({ type:'category', inverse:true,
+    data:D.storeTop.map(s=>s.name.replace('云购生活·','')),
+    axisLabel:{ color:'#bcd8f5', fontSize:14 } }, AXIS),
+  series: [{
+    type:'bar', barWidth:12, data:D.storeTop.map(s=>(s.gmv/1e4).toFixed(1)),
+    itemStyle:{ borderRadius:[0,6,6,0], color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#6a3bd8'},{offset:1,color:C.pink}]) },
+    label:{ show:true, position:'right', color:'#e2b8ff', fontSize:13, formatter:'{c}万' },
+  }],
+});
+</script>
+</body>
+</html>

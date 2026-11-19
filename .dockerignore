@@ -1,0 +1,8 @@
+*
+!app/app.py
+!app/requirements.txt
+!nl2sql/nl2sql_core.py
+!nl2sql/schema_prompt.txt
+!docker-compose.yml
+!README.md
+!lib/

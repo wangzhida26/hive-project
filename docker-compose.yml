@@ -1,18 +1,26 @@
-version: "3.8"
+# 云购生活数仓 · 一键部署编排（第 4 周交付物）
+# 用法：cp .env.example .env && 按需修改后执行 docker compose up -d
+# 敏感信息一律通过 ${VAR:-默认值} 环境变量注入，禁止在文件中硬编码密钥
+
 services:
+  # ---------- 元数据 / 报表 MySQL ----------
   mysql:
     image: mysql:8.0
     container_name: metastore-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_DATABASE: metastore
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
-      - "3307:3306"   # 宿主机 3306 可能被占用，映射到 3307；容器间仍走 3306
+      - "${MYSQL_HOST_PORT:-3307}:3306"   # 宿主机 3306 可能被占用，默认映射 3307
+    volumes:
+      - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD:-root}"]
       interval: 5s
       retries: 20
 
+  # ---------- Hive Metastore ----------
   hive-metastore:
     image: apache/hive:4.0.0
     container_name: hive-metastore
@@ -22,17 +30,25 @@ services:
     environment:
       SERVICE_NAME: metastore
       DB_DRIVER: mysql
-      SERVICE_OPTS: "-Djavax.jdo.option.ConnectionDriverName=com.mysql.cj.jdbc.Driver -Djavax.jdo.option.ConnectionURL=jdbc:mysql://metastore-mysql:3306/metastore?createDatabaseIfNotExist=true -Djavax.jdo.option.ConnectionUserName=root -Djavax.jdo.option.ConnectionPassword=root"
+      SERVICE_OPTS: "-Djavax.jdo.option.ConnectionDriverName=com.mysql.cj.jdbc.Driver -Djavax.jdo.option.ConnectionURL=jdbc:mysql://mysql:3306/metastore?createDatabaseIfNotExist=true -Djavax.jdo.option.ConnectionUserName=root -Djavax.jdo.option.ConnectionPassword=${MYSQL_ROOT_PASSWORD:-root}"
     ports: ["9083:9083"]
     volumes:
       # apache/hive:4.0.0 镜像不带 MySQL JDBC 驱动，必须挂载进来（否则 schemaTool 报 ClassNotFoundException）
       - ./lib/mysql-connector-j-8.2.0.jar:/opt/hive/lib/mysql-connector-j-8.2.0.jar:ro
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/9083' || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
 
+  # ---------- HiveServer2 ----------
   hive-server:
     image: apache/hive:4.0.0
     container_name: hive-server
     depends_on:
-      - hive-metastore
+      hive-metastore:
+        condition: service_healthy
     environment:
       SERVICE_NAME: hiveserver2
       SERVICE_OPTS: "-Dhive.metastore.uris=thrift://hive-metastore:9083"
@@ -40,3 +56,78 @@ services:
     volumes:
       - ./data:/data
       - ./lib/mysql-connector-j-8.2.0.jar:/opt/hive/lib/mysql-connector-j-8.2.0.jar:ro
+    healthcheck:
+      test: ["CMD-SHELL", "beeline -u jdbc:hive2://localhost:10000 -n hive -e 'select 1;' >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 60s
+      retries: 12
+      start_period: 90s
+
+  # ---------- ClickHouse（OLAP 加速/明细导出） ----------
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse
+    ports: ["8123:8123", "9000:9000"]
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    environment:
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER:-default}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-}
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- 'http://localhost:8123/?query=SELECT%201' >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  # ---------- Superset（BI 仪表板） ----------
+  superset:
+    image: apache/superset:latest
+    container_name: superset
+    depends_on:
+      hive-server:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    environment:
+      SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY:-please-change-this-secret-key-in-env}
+      SUPERSET_LOAD_EXAMPLES: "no"
+    ports: ["8088:8088"]
+    volumes:
+      - superset_data:/app/superset_home
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8088/health || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 8
+      start_period: 120s
+
+  # ---------- Streamlit 智能问答应用（NL2SQL） ----------
+  app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    container_name: ydsh-app
+    depends_on:
+      hive-server:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    environment:
+      NL2SQL_BACKEND: ${NL2SQL_BACKEND:-mysql}        # 容器内走 MySQL 报表镜像库；宿主机调试默认 hive
+      MYSQL_HOST: mysql
+      MYSQL_PORT: "3306"
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}         # 可选：配置后启用 LLM 引擎
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com/v1}
+    ports: ["8501:8501"]
+
+volumes:
+  mysql_data:
+  clickhouse_data:
+  superset_data:

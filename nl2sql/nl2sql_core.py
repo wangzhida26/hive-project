@@ -144,6 +144,40 @@ def run_hive(sql: str, timeout: int = 180) -> QueryResult:
     return QueryResult(sql=sql, columns=cols, rows=vals, elapsed=elapsed)
 
 
+def run_mysql(sql: str, timeout: int = 180) -> QueryResult:
+    """MySQL 后端（报表镜像库）：容器内 Streamlit App / 无 Docker CLI 环境使用。"""
+    import pymysql
+
+    t0 = time.time()
+    try:
+        conn = pymysql.connect(
+            host=os.environ.get("MYSQL_HOST", "127.0.0.1"),
+            port=int(os.environ.get("MYSQL_PORT", "3307")),
+            user=os.environ.get("MYSQL_USER", "root"),
+            password=os.environ.get("MYSQL_PASSWORD", "root"),
+            charset="utf8mb4", connect_timeout=10,
+        )
+        with conn.cursor() as cur:
+            cur.execute(sql)
+            cols = [d[0] for d in cur.description] if cur.description else []
+            rows = [list(r) for r in cur.fetchall()]
+        conn.close()
+        # 与 Hive 侧统一：数值列格式化为字符串（保持 fmt_cell 兼容）
+        vals = [[("" if v is None else f"{v:.6g}" if isinstance(v, float) else str(v)) for v in r]
+                for r in rows]
+        return QueryResult(sql=sql, columns=cols, rows=vals, elapsed=time.time() - t0)
+    except Exception as exc:
+        return QueryResult(sql=sql, error=f"{type(exc).__name__}: {exc}", elapsed=time.time() - t0)
+
+
+# 执行后端：hive（默认，docker exec beeline）| mysql（报表镜像库）
+EXEC_BACKEND = os.environ.get("NL2SQL_BACKEND", "hive")
+
+
+def run_query(sql: str, timeout: int = 180) -> QueryResult:
+    return run_mysql(sql, timeout) if EXEC_BACKEND == "mysql" else run_hive(sql, timeout)
+
+
 # ----------------------------------------------------------------------------
 # 3. 域值清单（供 Prompt 与实体抽取使用）
 # ----------------------------------------------------------------------------
@@ -160,7 +194,7 @@ def domains(refresh: bool = False) -> dict[str, list[str]]:
     if _domain_cache and not refresh:
         return _domain_cache
     for k, sql in DOMAIN_QUERIES.items():
-        r = run_hive(sql, timeout=60)
+        r = run_query(sql, timeout=60)
         _domain_cache[k] = [row[0] for row in r.rows if row] if r.ok else []
     return _domain_cache
 
@@ -485,7 +519,7 @@ class NL2SQL:
         if not sql:
             sql = guard_sql(self.rule.to_sql(question))
 
-        res = run_hive(sql)
+        res = run_query(sql)
         if verbose:
             print(f"[{engine}] {question}\n{'=' * 70}\n{sql}\n{'-' * 70}")
             print(res.to_markdown() if res.ok else f"ERROR: {res.error}")

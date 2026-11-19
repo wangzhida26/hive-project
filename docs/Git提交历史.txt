@@ -61,3 +61,11 @@ b8d7437  2026-11-10 09:05  王志达  Merge PR #1: NL2SQL 引擎（Code Review �
 c7d7d71  2026-11-19 12:55  王志达  docs(nl2sql): NL2SQL 使用说明与环境变量配置
 4bc2c34  2026-11-19 12:55  王志达  docs(git): 第3周 Issue 与 Code Review 记录（PR/Review/冲突解决留痕）
 cd7f7d0  2026-11-19 12:55  王志达  docs(week3): README 三周进展更新、报告口径修正（广东单店产出82.1%）与打包脚本
+
+===== 第 4 周 =====
+6ef2048  2026-11-19 15:32  王志达  feat(deploy): Docker Compose 六服务一键部署（Superset/ClickHouse/Streamlit + healthcheck + .env 密钥注入）
+cc2cf7e  2026-11-19 15:32  王志达  feat(nl2sql): NL2SQL_BACKEND 双执行后端（hive beeline / mysql 报表镜像库）
+b954138  2026-11-19 15:32  王志达  feat(screen): ECharts 数据大屏（1920x1080 scale 自适应，7 图表 + 合规中国地图，实测截图）
+3e4b7ed  2026-11-19 15:32  王志达  feat(analysis): Hive→MySQL 报表镜像、Superset REST 自动配置、优化对比与并发压测
+153409f  2026-11-19 15:32  王志达  docs(week4): 部署手册/API配置指南/压力测试记录/AI协同日志，README 四周进展
+509eec8  2026-11-19 15:33  王志达  chore: 移除误入库的临时 md 文件并忽略

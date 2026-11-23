@@ -69,3 +69,7 @@ b954138  2026-11-19 15:32  王志达  feat(screen): ECharts 数据大屏（1920x
 3e4b7ed  2026-11-19 15:32  王志达  feat(analysis): Hive→MySQL 报表镜像、Superset REST 自动配置、优化对比与并发压测
 153409f  2026-11-19 15:32  王志达  docs(week4): 部署手册/API配置指南/压力测试记录/AI协同日志，README 四周进展
 509eec8  2026-11-19 15:33  王志达  chore: 移除误入库的临时 md 文件并忽略
+
+===== 第 5 周 =====
+05a84f0  2026-11-23 10:09  王志达  docs(week5): 需求文档/数据质量清洗报告v2.0/架构设计文档v2.0、英文README、Git审查报告、答辩PPT与反思日志
+fac9bdd  2026-11-23 11:09  王志达  fix(deploy): 联调修复重建脚本幂等性（外部表CASCADE不删数据+LOAD追加致翻倍）与 Dockerfile COPY 路径，新增一致性核对 SQL

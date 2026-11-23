@@ -1,0 +1,32 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', flexDirection: 'column' }}>
+    <Box style={{ height: 64, background: '#1E4FA8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>云购生活新零售企业——企业级数据仓库与经营分析可视化系统</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, opacity: 0.85 }}>03 AI 分析与可视化</Text>
+    </Box>
+    <Box style={{ padding: '22px 40px 0' }}>
+        <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#0E3F8C' }}>三端可视化：一个数据底座，三种消费方式</Text>
+        <Box style={{ height: 1, background: '#D6DCE5', marginTop: 12 }} />
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'row', padding: '16px 40px', gap: 26, alignItems: 'center' }}>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 14 }}>
+            {[
+                ['Superset 仪表板', '6 图表 + 日期筛选器，REST API 全自动配置（会话 → JWT → CSRF 组合鉴权），环境重建后 5 分钟仪表板自动就绪'],
+                ['ECharts 数据大屏', '1920×1080 scale 自适应，KPI 卡 + 7 图表，中国地图使用阿里 DataV 审批 GeoJSON，全部资源离线 vendor 化，单 HTML 可开'],
+                ['Streamlit 问答应用', '提问 → NL2SQL → 结果 → 自动图表的完整闭环，容器化交付，与仪表板共用同一 MySQL 镜像口径'],
+            ].map(([t, d]) => (
+                <Box key={t} style={{ background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '16px 22px', flexDirection: 'column', gap: 6 }}>
+                    <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#1E4FA8' }}>{t}</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.5 }}>{d}</Text>
+                </Box>
+            ))}
+        </Box>
+        <Box style={{ flex: 1.15, flexDirection: 'column', gap: 8, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '14px' }}>
+            <Image src="assets/screen_shot.png" style={{ width: 620, height: 349, objectFit: 'contain' }} />
+            <Text style={{ fontSize: 15, color: '#4A5568', textAlign: 'center' }}>数据大屏实测截图（无头浏览器渲染验证通过）</Text>
+        </Box>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>云购生活数据仓库 · 200A</Text>
+        <Text style={{ fontSize: 14, color: '#1E4FA8' }}>13</Text>
+    </Box>
+</Slide>

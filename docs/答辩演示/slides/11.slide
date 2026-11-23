@@ -1,0 +1,43 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', flexDirection: 'column' }}>
+    <Box style={{ height: 64, background: '#1E4FA8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>云购生活新零售企业——企业级数据仓库与经营分析可视化系统</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, opacity: 0.85 }}>03 AI 分析与可视化</Text>
+    </Box>
+    <Box style={{ padding: '22px 40px 0' }}>
+        <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#0E3F8C' }}>KPI 指标体系与 GMV 预测建模</Text>
+        <Box style={{ height: 1, background: '#D6DCE5', marginTop: 12 }} />
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', padding: '0 40px', gap: 16 }}>
+        <Box style={{ flexDirection: 'row', gap: 20 }}>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 6, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '12px 14px' }}>
+                <Image src="assets/fig_gmv_trend.png" style={{ width: 548, height: 209, objectFit: 'contain' }} />
+                <Text style={{ fontSize: 15, color: '#4A5568', textAlign: 'center' }}>GMV 趋势、MA7 平滑与未来 7 天预测（真实输出）</Text>
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 6, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '12px 14px' }}>
+                <Image src="assets/fig_test_fit.png" style={{ width: 548, height: 209, objectFit: 'contain' }} />
+                <Text style={{ fontSize: 15, color: '#4A5568', textAlign: 'center' }}>测试集拟合对比：霍尔特线性趋势模型最优</Text>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', gap: 16 }}>
+            <Box style={{ flex: 1.4, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '12px 20px' }}>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                    <span style={{ fontWeight: 'bold', color: '#0E3F8C' }}>3 模型 + 2 基线</span>（移动平均 / 线性回归 / 霍尔特线性趋势），MAE 与 MAPE 量化评估，边界条件如实披露
+                </Text>
+            </Box>
+            <Box style={{ flex: 1.4, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '12px 20px' }}>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                    <span style={{ fontWeight: 'bold', color: '#0E3F8C' }}>11 项 KPI 口径统一</span>：有效 GMV / 客单价 / 复购率 / 退款率等全部从 DWD 一处计算
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ margin: '0 40px 14px', background: '#1E4FA8', borderRadius: 8, padding: '11px 26px' }}>
+        <Text style={{ fontSize: 18, color: '#FFFFFF', fontWeight: 'bold' }}>
+            异常预警实证：2024-11-06 GMV 骤降 61.25%，八品类全线同跌归因至平台级共性原因，而非单品类或单渠道故障
+        </Text>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>云购生活数据仓库 · 200A</Text>
+        <Text style={{ fontSize: 14, color: '#1E4FA8' }}>11</Text>
+    </Box>
+</Slide>

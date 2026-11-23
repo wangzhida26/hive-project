@@ -21,3 +21,7 @@ Thumbs.db
 # ===== 第三方依赖 jar（环境本机自带，不入库）=====
 lib/*.jar
 docs/src/_tmp_*.md
+
+# slidep 编辑器缓存
+docs/答辩演示/.cache/
+docs/答辩演示/.slidep/

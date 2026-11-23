@@ -1,0 +1,35 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', flexDirection: 'column' }}>
+    <Box style={{ height: 64, background: '#1E4FA8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>云购生活新零售企业——企业级数据仓库与经营分析可视化系统</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, opacity: 0.85 }}>01 项目概览</Text>
+    </Box>
+    <Box style={{ padding: '22px 40px 0' }}>
+        <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#0E3F8C' }}>系统总体架构：分层解耦，口径唯一</Text>
+        <Box style={{ height: 1, background: '#D6DCE5', marginTop: 12 }} />
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'row', padding: '14px 40px', gap: 28, alignItems: 'center' }}>
+        <Image src="assets/architecture.png" style={{ width: 500, height: 380, objectFit: 'contain' }} />
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 16 }}>
+            {[
+                ['分层解耦', 'ODS / STG / DWD / DWS / ADS 各层职责单一，上游变更只影响相邻层'],
+                ['口径唯一', '全部指标统一从 DWD 明细底座计算，ADS 只聚合不另起炉灶，杜绝口径漂移'],
+                ['可复现', 'rebuild_pipeline.sh 一键重建全链路，实测 3 分 22 秒，环境即代码'],
+                ['技术栈', 'Hive 4.0 + MySQL 8 + Python + LangChain + Superset 6.1 + ECharts 5.5 + Docker Compose'],
+            ].map(([t, d]) => (
+                <Box key={t} style={{ background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '16px 22px', flexDirection: 'column', gap: 6 }}>
+                    <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#1E4FA8' }}>{t}</Text>
+                    <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.5 }}>{d}</Text>
+                </Box>
+            ))}
+        </Box>
+    </Box>
+    <Box style={{ margin: '0 40px 14px', background: '#1E4FA8', borderRadius: 8, padding: '11px 26px' }}>
+        <Text style={{ fontSize: 18, color: '#FFFFFF', fontWeight: 'bold' }}>
+            架构不是组件堆砌：每一层都对应一类问题——贴源留证、清洗留痕、建模统一、集市直达业务
+        </Text>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>云购生活数据仓库 · 200A</Text>
+        <Text style={{ fontSize: 14, color: '#1E4FA8' }}>06</Text>
+    </Box>
+</Slide>

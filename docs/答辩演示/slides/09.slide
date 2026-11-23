@@ -1,0 +1,61 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', flexDirection: 'column' }}>
+    <Box style={{ height: 64, background: '#1E4FA8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>云购生活新零售企业——企业级数据仓库与经营分析可视化系统</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, opacity: 0.85 }}>02 数据治理与数仓建模</Text>
+    </Box>
+    <Box style={{ padding: '22px 40px 0' }}>
+        <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#0E3F8C' }}>星型模型与四层落地</Text>
+        <Box style={{ height: 1, background: '#D6DCE5', marginTop: 12 }} />
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'row', padding: '18px 40px', gap: 24 }}>
+        <Box style={{ flex: 1.15, flexDirection: 'column', gap: 12 }}>
+            <Table
+                style={{ width: '100%', height: 320 }}
+                defaultTextStyle={{ fontSize: 16, textAlign: 'center', color: '#1A2230' }}
+                defaultCellStyle={{
+                    border: {
+                        left: { width: 1, color: '#D6DCE5' },
+                        right: { width: 1, color: '#D6DCE5' },
+                        top: { width: 1, color: '#D6DCE5' },
+                        bottom: { width: 1, color: '#D6DCE5' },
+                    },
+                }}
+                cells={[
+                    [
+                        { text: '表', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1E4FA8' } } },
+                        { text: '类型', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1E4FA8' } } },
+                        { text: '粒度', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1E4FA8' } } },
+                        { text: '存储', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1E4FA8' } } },
+                    ],
+                    [{ text: 'dwd_order', textStyle: { bold: true } }, '事实表', '一笔订单一行', 'ORC · 366 分区'],
+                    ['dwd_order_item', '明细事实', '一行一个明细项', 'ORC'],
+                    ['dim_user', '维度表', '一位用户一行', '1,000 行'],
+                    ['dim_product', '维度表', '一款商品一行', '中位价修正'],
+                    ['dim_store', '维度表', '一家门店一行', '15 省份'],
+                    ['dim_date', '维度表', '一天一行', '366 天（闰年）'],
+                ]}
+            />
+            <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.5 }}>
+                动态分区装载显式设置 hive.exec.max.dynamic.partitions=1000（默认 100 必然超限）；分区裁剪经 EXPLAIN 验证：带谓词查询 4.90s vs 全表 5.37s
+            </Text>
+        </Box>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 14 }}>
+            <Box style={{ background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '16px 22px', flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#1E4FA8' }}>DWS 汇总层（5 张）</Text>
+                <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.5 }}>天×整体、天×品类、天×门店、天×渠道、用户全期——五个粒度统一从 DWD 聚合生成宽表</Text>
+            </Box>
+            <Box style={{ background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '16px 22px', flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#1E4FA8' }}>ADS 应用层（6 张）</Text>
+                <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.5 }}>KPI 大盘、GMV 趋势、品类排行、门店排行、渠道分布、用户价值分层——一张表对应一个看板主题</Text>
+            </Box>
+            <Box style={{ background: '#F0F5FC', border: '1px solid #3D7BD9', borderRadius: 10, padding: '16px 22px', flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#0E3F8C' }}>命名规范</Text>
+                <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.5 }}>层次前缀 + 业务主体：dwd_ / dim_ / stg1~3_ / tmp_，分区字段统一 order_dt，见名知义</Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>云购生活数据仓库 · 200A</Text>
+        <Text style={{ fontSize: 14, color: '#1E4FA8' }}>09</Text>
+    </Box>
+</Slide>

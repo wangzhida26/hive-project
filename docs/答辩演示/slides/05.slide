@@ -1,0 +1,55 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', flexDirection: 'column' }}>
+    <Box style={{ height: 64, background: '#1E4FA8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>云购生活新零售企业——企业级数据仓库与经营分析可视化系统</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, opacity: 0.85 }}>01 项目概览</Text>
+    </Box>
+    <Box style={{ padding: '22px 40px 0' }}>
+        <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#0E3F8C' }}>全流程数据链路：从原始 CSV 到三端应用</Text>
+        <Box style={{ height: 1, background: '#D6DCE5', marginTop: 12 }} />
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', padding: '0 40px', gap: 30 }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            {[
+                ['业务 CSV', '6 张源表 15,600 行订单', '#4A5568'],
+                ['ODS 贴源', '原样接入 保留脏数据', '#4A5568'],
+                ['STG 三站清洗', '枚举→异常格式→拆分合并', '#1E4FA8'],
+                ['DWD 明细', '星型模型 366 分区 ORC', '#1E4FA8'],
+                ['DWS 汇总', '五粒度日汇总宽表', '#1E4FA8'],
+                ['ADS 应用', '六张主题集市表', '#0E3F8C'],
+            ].map(([t, d], i, arr) => (
+                <Box key={t} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Box style={{ width: 172, background: '#F0F5FC', border: '1px solid #3D7BD9', borderRadius: 10, padding: '14px 12px', flexDirection: 'column', gap: 6, alignItems: 'center' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0E3F8C', textAlign: 'center' }}>{t}</Text>
+                        <Text style={{ fontSize: 13, color: '#4A5568', textAlign: 'center', lineHeight: 1.4 }}>{d}</Text>
+                    </Box>
+                    {i < arr.length - 1 && <Text style={{ fontSize: 22, color: '#1E4FA8', margin: '0 6px' }}>→</Text>}
+                </Box>
+            ))}
+        </Box>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+            <Box style={{ background: '#0E3F8C', borderRadius: 8, padding: '12px 24px' }}>
+                <Text style={{ fontSize: 17, color: '#FFFFFF' }}>三端应用：Superset 仪表板 · ECharts 大屏 · Streamlit 问答</Text>
+            </Box>
+            <Text style={{ fontSize: 22, color: '#1E4FA8' }}>⬇ 支撑</Text>
+            <Box style={{ background: '#E8EFF8', borderRadius: 8, padding: '12px 24px' }}>
+                <Text style={{ fontSize: 17, color: '#0E3F8C' }}>Python 预测建模 · KPI 计算 · MySQL 报表镜像</Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ flexDirection: 'row', justifyContent: 'space-around', padding: '0 40px', marginBottom: 18 }}>
+        {[
+            ['14,696', '清洗后事实表行数（全链路对账闭环）'],
+            ['366', '动态分区（2024 全年，分区裁剪实测生效）'],
+            ['6 服务', 'Docker Compose 一键编排 healthcheck 全链路'],
+        ].map(([n, d]) => (
+            <Box key={n} style={{ flexDirection: 'column', alignItems: 'center', gap: 4, flex: 1 }}>
+                <Text style={{ fontSize: 42, fontWeight: 'bold', color: '#1E4FA8' }}>{n}</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', textAlign: 'center' }}>{d}</Text>
+            </Box>
+        ))}
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>云购生活数据仓库 · 200A</Text>
+        <Text style={{ fontSize: 14, color: '#1E4FA8' }}>05</Text>
+    </Box>
+</Slide>

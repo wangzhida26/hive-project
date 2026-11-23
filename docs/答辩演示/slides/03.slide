@@ -1,0 +1,25 @@
+<Slide style={{ width: 1280, height: 720, background: '#F7F9FC', flexDirection: 'column' }}>
+    <Box style={{ height: 12, background: '#1E4FA8' }} />
+    <Box style={{ flex: 1, flexDirection: 'row', alignItems: 'center', padding: '0 80px', gap: 60 }}>
+        <Text style={{ fontSize: 200, fontWeight: 'bold', color: '#1E4FA8', opacity: 0.9, width: 320 }}>01</Text>
+        <Box style={{ flexDirection: 'column', gap: 22, flex: 1 }}>
+            <Text style={{ fontSize: 44, fontWeight: 'bold', color: '#0E3F8C' }}>项目概览</Text>
+            <Box style={{ height: 2, width: 120, background: '#1E4FA8' }} />
+            <Text style={{ fontSize: 22, color: '#4A5568', lineHeight: 1.7 }}>
+                新零售业务扩张带来的数据困境：六张业务表分散孤立、五类脏数据无法直接分析、<br />
+                经营决策缺少统一指标口径、业务取数完全依赖人工写 SQL。<br />
+                本项目用四层数仓 + 统一指标体系 + AI 智能问答给出工程化答案。
+            </Text>
+            <Box style={{ flexDirection: 'row', gap: 14 }}>
+                {['数据孤岛', '质量失控', '口径混乱', '取数门槛高'].map(t => (
+                    <Box key={t} style={{ background: '#E8EFF8', borderRadius: 20, padding: '8px 22px' }}>
+                        <Text style={{ fontSize: 17, color: '#0E3F8C', fontWeight: 'bold' }}>{t}</Text>
+                    </Box>
+                ))}
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', padding: '0 60px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>云购生活数据仓库 · 200A</Text>
+    </Box>
+</Slide>

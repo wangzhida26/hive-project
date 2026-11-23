@@ -1,0 +1,21 @@
+<Slide style={{ width: 1280, height: 720, background: '#F7F9FC', flexDirection: 'column' }}>
+    <Box style={{ height: 88, background: '#1E4FA8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 60px' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'bold' }}>企业项目实战实训 · 综合答辩</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 16, opacity: 0.85 }}>2026 年 11 月</Text>
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '0 60px' }}>
+        <Text style={{ fontSize: 22, color: '#3D7BD9', letterSpacing: 4, marginBottom: 18 }}>ENTERPRISE DATA WAREHOUSE & ANALYTICS SYSTEM</Text>
+        <Text style={{ fontSize: 52, fontWeight: 'bold', color: '#0E3F8C', textAlign: 'center', lineHeight: 1.25 }}>云购生活新零售企业<br />企业级数据仓库与经营分析可视化系统</Text>
+        <Box style={{ height: 3, width: 160, background: '#1E4FA8', marginTop: 26, marginBottom: 26 }} />
+        <Text style={{ fontSize: 20, color: '#4A5568', textAlign: 'center', lineHeight: 1.6 }}>
+            数据治理 · 四层数仓 · 指标体系 · 预测建模 · NL2SQL 智能问答<br />Superset 仪表板 · ECharts 数据大屏 · Docker 一键部署
+        </Text>
+    </Box>
+    <Box style={{ height: 120, background: '#E8EFF8', flexDirection: 'column', justifyContent: 'center', padding: '0 60px', gap: 8 }}>
+        <Box style={{ flexDirection: 'row', gap: 32, alignItems: 'center' }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0E3F8C' }}>团队：200A</Text>
+            <Text style={{ fontSize: 18, color: '#4A5568' }}>汇报人：王志达（数据工程师）</Text>
+        </Box>
+        <Text style={{ fontSize: 16, color: '#4A5568' }}>成员：陈劲松（项目经理） · 王志达（数据工程师） · 刘畅（数据分析师） · 刘正扬（可视化工程师）　|　青岛城市学院</Text>
+    </Box>
+</Slide>

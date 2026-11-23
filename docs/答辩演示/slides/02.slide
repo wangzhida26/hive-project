@@ -1,0 +1,22 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', flexDirection: 'row' }}>
+    <Box style={{ width: 320, background: '#0E3F8C', flexDirection: 'column', justifyContent: 'center', padding: '0 40px', gap: 16 }}>
+        <Text style={{ fontSize: 56, fontWeight: 'bold', color: '#FFFFFF' }}>目录</Text>
+        <Text style={{ fontSize: 16, color: '#E8EFF8', lineHeight: 1.5 }}>CONTENTS<br />五周成果的完整交付汇报</Text>
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', padding: '0 60px', gap: 26 }}>
+        {[
+            ['01', '项目概览', '业务痛点、需求体系与全流程数据链路'],
+            ['02', '数据治理与数仓建模', '五类脏数据 100% 修复、星型模型、四层分层落地'],
+            ['03', 'AI 分析与可视化', 'KPI 指标体系、预测建模、NL2SQL 问答、三端可视化'],
+            ['04', '工程化与总结', '一键部署、Git 工程规范、文档体系与个人复盘'],
+        ].map(([num, title, desc]) => (
+            <Box key={num} style={{ flexDirection: 'row', alignItems: 'center', gap: 24, background: '#F0F5FC', borderRadius: 8, padding: '22px 28px', border: '1px solid #D6DCE5' }}>
+                <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#1E4FA8', width: 70 }}>{num}</Text>
+                <Box style={{ flexDirection: 'column', gap: 6 }}>
+                    <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#0E3F8C' }}>{title}</Text>
+                    <Text style={{ fontSize: 17, color: '#4A5568' }}>{desc}</Text>
+                </Box>
+            </Box>
+        ))}
+    </Box>
+</Slide>

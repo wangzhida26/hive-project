@@ -1,0 +1,48 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', flexDirection: 'column' }}>
+    <Box style={{ height: 64, background: '#1E4FA8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>云购生活新零售企业——企业级数据仓库与经营分析可视化系统</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, opacity: 0.85 }}>03 AI 分析与可视化</Text>
+    </Box>
+    <Box style={{ padding: '22px 40px 0' }}>
+        <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#0E3F8C' }}>NL2SQL 智能问答：业务人员用中文直接取数</Text>
+        <Box style={{ height: 1, background: '#D6DCE5', marginTop: 12 }} />
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'row', padding: '18px 40px', gap: 24, alignItems: 'center' }}>
+        <Box style={{ flex: 1.2, flexDirection: 'column', gap: 12 }}>
+            {[
+                ['1', '中文提问', '「去年 11 月广东卖了多少钱」'],
+                ['2', '双引擎解析', '规则引擎兜底 + LangChain 链路语义增强'],
+                ['3', 'SQL 护栏', '表名/字段白名单校验，拒绝越权与全表扫描'],
+                ['4', '双执行后端', 'NL2SQL_BACKEND=hive（beeline）/ mysql（报表镜像库）'],
+                ['5', '结果直出', '数值 + 表格 + Plotly 自动图表'],
+            ].map(([n, t, d]) => (
+                <Box key={n} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '12px 18px' }}>
+                    <Box style={{ width: 40, height: 40, background: '#1E4FA8', borderRadius: 8, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#FFFFFF' }}>{n}</Text>
+                    </Box>
+                    <Box style={{ flexDirection: 'column', gap: 2, flex: 1 }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0E3F8C' }}>{t}</Text>
+                        <Text style={{ fontSize: 16, color: '#4A5568' }}>{d}</Text>
+                    </Box>
+                </Box>
+            ))}
+        </Box>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 16 }}>
+            <Box style={{ background: '#0E3F8C', borderRadius: 10, padding: '24px 28px', flexDirection: 'column', gap: 8 }}>
+                <Text style={{ fontSize: 17, color: '#E8EFF8' }}>实测示例（Streamlit「整体经营大盘」）</Text>
+                <Text style={{ fontSize: 44, fontWeight: 'bold', color: '#FFFFFF' }}>¥24,805,594.44</Text>
+                <Text style={{ fontSize: 17, color: '#E8EFF8' }}>全年有效 GMV 一问即答，口径与 KPI 结果表完全一致</Text>
+            </Box>
+            <Box style={{ background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '18px 24px', flexDirection: 'column', gap: 8 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0E3F8C' }}>工程化保障</Text>
+                <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.55 }}>
+                    schema 自动抽取（表结构 + 中文注释）；12 问批量实测日志留痕；无 LLM Key 时规则引擎全量兜底可用，有 Key 时语义增强
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>云购生活数据仓库 · 200A</Text>
+        <Text style={{ fontSize: 14, color: '#1E4FA8' }}>12</Text>
+    </Box>
+</Slide>

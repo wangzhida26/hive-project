@@ -1,0 +1,54 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', flexDirection: 'column' }}>
+    <Box style={{ height: 64, background: '#1E4FA8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>云购生活新零售企业——企业级数据仓库与经营分析可视化系统</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, opacity: 0.85 }}>02 数据治理与数仓建模</Text>
+    </Box>
+    <Box style={{ padding: '22px 40px 0' }}>
+        <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#0E3F8C' }}>数据清洗成果：五类脏数据全部修复</Text>
+        <Box style={{ height: 1, background: '#D6DCE5', marginTop: 12 }} />
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', padding: '0 40px', gap: 20 }}>
+        <Table
+            style={{ width: '100%', height: 330 }}
+            defaultTextStyle={{ fontSize: 18, textAlign: 'center', color: '#1A2230' }}
+            defaultCellStyle={{
+                border: {
+                    left: { width: 1, color: '#D6DCE5' },
+                    right: { width: 1, color: '#D6DCE5' },
+                    top: { width: 1, color: '#D6DCE5' },
+                    bottom: { width: 1, color: '#D6DCE5' },
+                },
+            }}
+            cells={[
+                [
+                    { text: '脏数据类别', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1E4FA8' } } },
+                    { text: '清洗前', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1E4FA8' } } },
+                    { text: '清洗后', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1E4FA8' } } },
+                    { text: '修复率', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1E4FA8' } } },
+                    { text: '处理策略', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1E4FA8' } } },
+                ],
+                ['1. 重复记录', '600 行冗余', '0 行', { text: '100%', textStyle: { bold: true, color: '#1E4FA8' } }, 'ROW_NUMBER 按主键去重'],
+                ['2a. 负金额', '310 条', '0 条', { text: '100%', textStyle: { bold: true, color: '#1E4FA8' } }, '判定符号错误，取绝对值'],
+                ['2b. 大额断档 ≥10万', '304 条', '分析层 0 条', { text: '100%（隔离）', textStyle: { bold: true, color: '#1E4FA8' } }, '不做伪还原，STG3 留痕 + DWD 过滤'],
+                ['3. 日期格式不统一', '2,027 条', '0 条', { text: '100%', textStyle: { bold: true, color: '#1E4FA8' } }, '统一 yyyy-MM-dd'],
+                ['4. 手机号格式', '102 条', '0 条', { text: '100%', textStyle: { bold: true, color: '#1E4FA8' } }, '去分隔符，统一 11 位'],
+                ['5. 枚举值混乱', '性别 8 种 / 支付 7 种 / 会员 12 种', '收敛至规范值域', { text: '100%', textStyle: { bold: true, color: '#1E4FA8' } }, 'CASE WHEN + 编码维表校验'],
+            ]}
+        />
+        <Box style={{ background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '14px 24px', flexDirection: 'row', alignItems: 'center', gap: 20 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1E4FA8' }}>行数对账闭环</Text>
+            <Text style={{ fontSize: 19, color: '#1A2230' }}>
+                15,600（ODS）− 600（去重）= 15,000（STG3）− 304（大额过滤）= <span style={{ fontWeight: 'bold', color: '#0E3F8C' }}>14,696（DWD）</span>，逐环节实跑核对
+            </Text>
+        </Box>
+    </Box>
+    <Box style={{ margin: '0 40px 14px', background: '#1E4FA8', borderRadius: 8, padding: '11px 26px' }}>
+        <Text style={{ fontSize: 18, color: '#FFFFFF', fontWeight: 'bold' }}>
+            原则：能修复的修复，不能修复的隔离留痕——绝不制造虚假数据
+        </Text>
+    </Box>
+    <Box style={{ height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>云购生活数据仓库 · 200A</Text>
+        <Text style={{ fontSize: 14, color: '#1E4FA8' }}>08</Text>
+    </Box>
+</Slide>

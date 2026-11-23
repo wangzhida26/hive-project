@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /opt/app
 
-COPY requirements.txt .
+COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # NL2SQL 引擎与 Schema 提示词

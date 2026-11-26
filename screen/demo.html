@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>云购生活 · 答辩演示导航</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(1200px 600px at 20% 0%, #14315e 0%, #0a1628 45%, #060d18 100%);
+    font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+    color: #e8eef8;
+    padding: 48px 40px 40px;
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; }
+  header { margin-bottom: 38px; }
+  .eyebrow {
+    display: inline-block; font-size: 13px; letter-spacing: 3px; color: #5fa8ff;
+    border: 1px solid rgba(95,168,255,.4); border-radius: 4px; padding: 5px 12px; margin-bottom: 18px;
+  }
+  h1 { font-size: 38px; font-weight: 700; letter-spacing: 1px; }
+  h1 span { color: #4a9eff; }
+  .sub { margin-top: 12px; font-size: 15px; color: #8fa6c4; line-height: 1.7; }
+  .meta { margin-top: 16px; font-size: 13px; color: #6b83a3; }
+  .meta b { color: #a8c4e6; font-weight: 500; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 36px; }
+  .card {
+    position: relative; background: linear-gradient(160deg, rgba(30,58,102,.72), rgba(14,26,46,.86));
+    border: 1px solid rgba(74,158,255,.22); border-radius: 14px; padding: 26px 24px 22px;
+    transition: transform .22s, border-color .22s, box-shadow .22s; overflow: hidden;
+  }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #4a9eff, #22d3ee); opacity: .85;
+  }
+  .card:hover { transform: translateY(-4px); border-color: rgba(74,158,255,.55); box-shadow: 0 14px 40px rgba(20,80,160,.35); }
+  .idx { font-size: 12px; color: #4a9eff; letter-spacing: 2px; font-weight: 600; }
+  .card h2 { font-size: 21px; margin: 10px 0 8px; font-weight: 600; }
+  .card p { font-size: 13.5px; color: #93aac9; line-height: 1.65; min-height: 62px; }
+  .url {
+    font-family: Consolas, monospace; font-size: 13px; color: #7fd4ff;
+    background: rgba(10,24,44,.8); border: 1px solid rgba(74,158,255,.18);
+    border-radius: 6px; padding: 8px 10px; margin: 14px 0 16px; word-break: break-all;
+  }
+  .row { display: flex; align-items: center; gap: 10px; }
+  .btn {
+    flex: 1; text-align: center; text-decoration: none; font-size: 14px; font-weight: 600;
+    padding: 11px 0; border-radius: 8px; color: #fff;
+    background: linear-gradient(135deg, #2f7ce0, #1b5bb5);
+    border: 1px solid rgba(120,190,255,.35); transition: filter .18s;
+  }
+  .btn:hover { filter: brightness(1.15); }
+  .status { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #8fa6c4; margin-top: 14px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #64748b; box-shadow: 0 0 0 0 rgba(100,116,139,.5); }
+  .dot.ok { background: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,.8); }
+  .dot.bad { background: #ef4444; box-shadow: 0 0 10px rgba(239,68,68,.7); }
+  .dot.wait { background: #f59e0b; animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: .45 } 50% { opacity: 1 } }
+
+  .panel { margin-top: 30px; background: rgba(16,30,52,.7); border: 1px solid rgba(74,158,255,.18); border-radius: 14px; padding: 24px 26px; }
+  .panel h3 { font-size: 16px; margin-bottom: 14px; color: #cfe2f8; display: flex; align-items: center; gap: 9px; }
+  .panel h3 em { font-style: normal; font-size: 12px; color: #6b83a3; font-weight: 400; }
+  pre {
+    font-family: Consolas, "Courier New", monospace; font-size: 12.8px; line-height: 1.85;
+    color: #b8d4f0; background: #060e1a; border: 1px solid rgba(74,158,255,.14);
+    border-radius: 8px; padding: 16px 18px; overflow-x: auto; white-space: pre;
+  }
+  pre .c { color: #5f7c9e; }
+  pre .k { color: #7fd4ff; }
+  .tips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 18px; }
+  .tip { font-size: 13px; color: #93aac9; line-height: 1.7; padding-left: 14px; border-left: 2px solid rgba(74,158,255,.45); }
+  .tip b { color: #cfe2f8; font-weight: 600; }
+  footer { margin-top: 34px; text-align: center; font-size: 12px; color: #556d8c; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">YDSH-DW · 答辩演示环境</div>
+    <h1>云购生活新零售 <span>数据仓库与经营分析系统</span></h1>
+    <div class="sub">三个入口对应三层能力：<b style="color:#7fd4ff">自助分析</b>（Superset）· <b style="color:#7fd4ff">经营大屏</b>（ECharts）· <b style="color:#7fd4ff">自然语言问数</b>（NL2SQL + Streamlit）</div>
+    <div class="meta">团队 <b>200A</b> · 王志达 · 青岛城市学院 &nbsp;|&nbsp; 数据链路 ODS → DWD → DWS → ADS &nbsp;|&nbsp; 六服务 Docker 编排</div>
+  </header>
+
+  <div class="grid">
+    <div class="card" data-check="http://localhost:8088">
+      <div class="idx">01 / 自助分析</div>
+      <h2>Superset 仪表板</h2>
+      <p>6 张图表 + 日期范围筛选器，筛选联动全图。数据实时查 ADS 镜像层，不是静态截图。</p>
+      <div class="url">http://localhost:8088</div>
+      <div class="row"><a class="btn" href="http://localhost:8088/dashboard/list/" target="_blank">打开仪表板</a></div>
+      <div class="status"><span class="dot wait"></span><span class="txt">检测中…</span></div>
+      <div class="url" style="margin-top:12px;font-size:12px;color:#93aac9">登录：admin / admin → Dashboards →「云购生活经营分析仪表板」</div>
+    </div>
+
+    <div class="card" data-check="http://127.0.0.1:8900">
+      <div class="idx">02 / 经营大屏</div>
+      <h2>ECharts 数据大屏</h2>
+      <p>1920×1080 自适应单文件大屏：KPI 卡 + 中国地图热力 + 品类渠道 + 门店排行。离线可跑。</p>
+      <div class="url">http://127.0.0.1:8900/云购生活数据大屏.html</div>
+      <div class="row"><a class="btn" href="云购生活数据大屏.html" target="_blank">打开大屏</a></div>
+      <div class="status"><span class="dot wait"></span><span class="txt">检测中…</span></div>
+      <div class="url" style="margin-top:12px;font-size:12px;color:#93aac9">按 F11 全屏演示；数据已内嵌，无需后端</div>
+    </div>
+
+    <div class="card" data-check="http://localhost:8501">
+      <div class="idx">03 / 自然语言问数</div>
+      <h2>NL2SQL 智能问答</h2>
+      <p>自然语言进、SQL 出、结果自动配图。双执行后端（Hive beeline / MySQL），可切换。</p>
+      <div class="url">http://localhost:8501</div>
+      <div class="row"><a class="btn" href="http://localhost:8501" target="_blank">打开问答</a></div>
+      <div class="status"><span class="dot wait"></span><span class="txt">检测中…</span></div>
+      <div class="url" style="margin-top:12px;font-size:12px;color:#93aac9">试试输入：整体经营大盘 / 各省份销售额排名</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>一键启动全部服务 <em>在项目根目录执行，首次约 1–2 分钟</em></h3>
+    <pre><span class="c"># 1) 确认 Docker Desktop 已启动（任务栏鲸鱼图标常亮）</span>
+<span class="k">cd</span> C:/Users/21553/WorkBuddy/2026-10-28-17-01-13/ydsh-dw
+<span class="k">docker</span> compose up -d
+
+<span class="c"># 2) 等待 hive-server 健康（约 40 秒），确认六服务状态</span>
+<span class="k">docker</span> compose ps
+
+<span class="c"># 3) 检查 Hive 四层库是否在线</span>
+<span class="k">docker</span> exec hive-server beeline -u "jdbc:hive2://localhost:10000" -n hive -e "show databases"
+
+<span class="c"># 4) 启动大屏静态服务（新窗口，保持不关）</span>
+<span class="k">cd</span> screen &amp;&amp; <span class="k">python</span> -m http.server 8900
+
+<span class="c"># 5) 打开本导航页</span>
+<span class="c">#    http://127.0.0.1:8900/答辩演示导航.html</span></pre>
+    <div class="tips">
+      <div class="tip"><b>数据丢了？</b> 执行 <code style="color:#7fd4ff">bash rebuild_pipeline.sh</code>，约 3 分半自动重建 ODS→DWS 全链路并校验指标。</div>
+      <div class="tip"><b>只演示大屏？</b> 双击 <code style="color:#7fd4ff">云购生活数据大屏.html</code> 即可，file:// 也能跑，数据内嵌不依赖任何服务。</div>
+      <div class="tip"><b>Superset 图表空白？</b> 首次访问 driver 缓存未热，刷新一次即可；仍空白则 <code style="color:#7fd4ff">docker restart superset</code>。</div>
+      <div class="tip"><b>Streamlit 无响应？</b> 终端跑 <code style="color:#7fd4ff">python nl2sql/test_nl2sql.py rule</code>，直接展示 SQL 与结果。</div>
+    </div>
+  </div>
+
+  <footer>答辩演示导航 · 数据口径统一来自 ADS 层 · 三端数字已实测一致（GMV 24,805,594.44）</footer>
+</div>
+
+<script>
+  const cards = document.querySelectorAll('.card[data-check]');
+  cards.forEach(card => {
+    const url = card.dataset.check;
+    const dot = card.querySelector('.dot');
+    const txt = card.querySelector('.txt');
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 2500);
+    fetch(url, { mode: 'no-cors', signal: ctrl.signal, cache: 'no-store' })
+      .then(() => { clearTimeout(timer); dot.className = 'dot ok'; txt.textContent = '服务在线，可点击打开'; })
+      .catch(() => { clearTimeout(timer); dot.className = 'dot bad'; txt.textContent = '未响应，请先启动服务（见下方命令）'; });
+  });
+</script>
+</body>
+</html>

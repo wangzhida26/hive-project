@@ -13,8 +13,10 @@ import requests
 ADMIN = ("admin", "admin")
 
 # 图表定义：标题 / 数据集 / viz_type / 参数
-# 注意：离线环境禁用 deck_*(依赖在线地图瓦片)；时间序列类(echarts_timeseries_*/big_number)
-# 要求时间轴——非时间维度的柱状/排行一律用 echarts_bar、无时间维的大数字用 big_number_total。
+# 注意：本镜像前端仅注册 echarts_timeseries_line / pie / table / big_number(_total) 四类插件，
+# echarts_bar / treemap / pivot_table 等虽在图库目录中列出但懒加载缺块（"not registered"）。
+# 离线环境禁用 deck_*(依赖在线地图瓦片)；时间序列类(echarts_timeseries_*/big_number)
+# 要求时间轴——非时间维度一律用 pie 或 table 呈现。
 CHART_SPECS = [
     {
         "table": "ads_gmv_daily", "schema": "ydsh_ads",
@@ -29,22 +31,23 @@ CHART_SPECS = [
     },
     {
         "table": "ads_category_sales", "schema": "ydsh_ads",
-        "name": "品类销售对比", "viz": "echarts_bar",
+        "name": "品类销售对比", "viz": "pie",
         "params": {
-            "metrics": [{"expressionType": "SIMPLE", "column": {"column_name": "gmv"},
-                         "aggregate": "SUM", "label": "GMV"}],
-            "groupby": ["category"], "sort_by_metric": True,
-            "color_scheme": "supersetColors", "show_legend": True,
+            "metric": {"expressionType": "SIMPLE", "column": {"column_name": "gmv"},
+                       "aggregate": "SUM", "label": "GMV"},
+            "groupby": ["category"], "pie_label_type": "auto",
+            "donut": True, "show_legend": True, "color_scheme": "supersetColors",
         },
     },
     {
         "table": "ads_province_geo", "schema": "ydsh_ads",
-        "name": "区域分布（省份 GMV 排行）", "viz": "echarts_bar",
+        "name": "区域分布（省份 GMV 排行）", "viz": "table",
         "params": {
+            "groupby": ["province"],
             "metrics": [{"expressionType": "SIMPLE", "column": {"column_name": "gmv"},
                          "aggregate": "SUM", "label": "GMV"}],
-            "groupby": ["province"], "sort_by_metric": True,
-            "color_scheme": "supersetColors", "show_legend": False,
+            "order_desc": True, "row_limit": 20, "page_length": 10,
+            "table_timestamp_format": "%Y-%m-%d",
         },
     },
     {

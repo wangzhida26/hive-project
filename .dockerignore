@@ -1,8 +1,11 @@
 *
 !app/app.py
 !app/requirements.txt
+!app/chart_engine.py
+!app/forecast_engine.py
 !nl2sql/nl2sql_core.py
 !nl2sql/schema_prompt.txt
+!screen/vendor/china.json
 !docker-compose.yml
 !README.md
 !lib/

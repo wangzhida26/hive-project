@@ -240,9 +240,10 @@ class LLMEngine:
     name = "LLM"
 
     def __init__(self) -> None:
-        self.api_key = os.getenv("OPENAI_API_KEY", "").strip()
-        self.base_url = os.getenv("OPENAI_BASE_URL", "").strip() or None
-        self.model = os.getenv("OPENAI_MODEL", "deepseek-chat").strip()
+        # 兼容两套命名：OPENAI_API_KEY（通用）/ DEEPSEEK_API_KEY（compose 注入）
+        self.api_key = (os.getenv("OPENAI_API_KEY") or os.getenv("DEEPSEEK_API_KEY") or "").strip()
+        self.base_url = (os.getenv("OPENAI_BASE_URL") or os.getenv("DEEPSEEK_BASE_URL") or "").strip() or None
+        self.model = (os.getenv("OPENAI_MODEL") or "deepseek-chat").strip()
         self.schema = SCHEMA_FILE.read_text(encoding="utf-8")
         self.available = bool(self.api_key) and not self.api_key.startswith("sk-your")
 

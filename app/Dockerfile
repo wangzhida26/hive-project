@@ -10,6 +10,7 @@ COPY nl2sql/nl2sql_core.py ./nl2sql/nl2sql_core.py
 COPY nl2sql/schema_prompt.txt ./nl2sql/schema_prompt.txt
 COPY app/app.py ./app/app.py
 COPY app/chart_engine.py ./app/chart_engine.py
+COPY app/forecast_engine.py ./app/forecast_engine.py
 # 中国地图 GeoJSON（DataV，含南海诸岛），供图表引擎渲染省份分布
 COPY screen/vendor/china.json ./app/china.json
 

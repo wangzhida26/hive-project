@@ -13,6 +13,8 @@ import requests
 ADMIN = ("admin", "admin")
 
 # 图表定义：标题 / 数据集 / viz_type / 参数
+# 注意：离线环境禁用 deck_*(依赖在线地图瓦片)；时间序列类(echarts_timeseries_*/big_number)
+# 要求时间轴——非时间维度的柱状/排行一律用 echarts_bar、无时间维的大数字用 big_number_total。
 CHART_SPECS = [
     {
         "table": "ads_gmv_daily", "schema": "ydsh_ads",
@@ -27,24 +29,22 @@ CHART_SPECS = [
     },
     {
         "table": "ads_category_sales", "schema": "ydsh_ads",
-        "name": "品类销售对比", "viz": "echarts_timeseries_bar",
+        "name": "品类销售对比", "viz": "echarts_bar",
         "params": {
             "metrics": [{"expressionType": "SIMPLE", "column": {"column_name": "gmv"},
                          "aggregate": "SUM", "label": "GMV"}],
-            "groupby": ["category"], "x_axis": "category",
+            "groupby": ["category"], "sort_by_metric": True,
             "color_scheme": "supersetColors", "show_legend": True,
         },
     },
     {
         "table": "ads_province_geo", "schema": "ydsh_ads",
-        "name": "区域分布（省份气泡图）", "viz": "deck_scatter",
+        "name": "区域分布（省份 GMV 排行）", "viz": "echarts_bar",
         "params": {
-            "point_radius": "Auto",
-            "metric": {"expressionType": "SIMPLE", "column": {"column_name": "gmv"},
-                       "aggregate": "SUM", "label": "GMV"},
-            "spatial": {"type": "latlong", "longitudeColumn": "lng", "latitudeColumn": "lat"},
-            "groupby": ["province"], "mapbox_label": ["province"],
-            "js_tooltip": True, "mapbox_color": "supersetColors_20",
+            "metrics": [{"expressionType": "SIMPLE", "column": {"column_name": "gmv"},
+                         "aggregate": "SUM", "label": "GMV"}],
+            "groupby": ["province"], "sort_by_metric": True,
+            "color_scheme": "supersetColors", "show_legend": False,
         },
     },
     {
@@ -72,7 +72,7 @@ CHART_SPECS = [
     },
     {
         "table": "ads_gmv_daily", "schema": "ydsh_ads",
-        "name": "年度 GMV 大数字", "viz": "big_number",
+        "name": "年度 GMV 大数字", "viz": "big_number_total",
         "params": {
             "metric": {"expressionType": "SIMPLE", "column": {"column_name": "gmv"},
                        "aggregate": "SUM", "label": "GMV"},

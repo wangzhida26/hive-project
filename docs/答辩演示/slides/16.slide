@@ -1,15 +1,44 @@
-<Slide style={{ width: 1280, height: 720, background: '#F7F9FC', flexDirection: 'column' }}>
-    <Box style={{ height: 88, background: '#1E4FA8' }} />
-    <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 24, padding: '0 60px' }}>
-        <Text style={{ fontSize: 60, fontWeight: 'bold', color: '#0E3F8C' }}>感谢聆听 · 恳请评审提问</Text>
-        <Box style={{ height: 3, width: 160, background: '#1E4FA8' }} />
-        <Text style={{ fontSize: 22, color: '#4A5568', textAlign: 'center', lineHeight: 1.7 }}>
-            演示路线：数据链路 → 四层数仓 → 预测模型 → NL2SQL 问答 → 可视化大屏 → 一键部署<br />
-            欢迎现场指定任意环节实测复现
-        </Text>
-        <Text style={{ fontSize: 18, color: '#8B97A8' }}>
-            团队 200A　|　陈劲松 · 王志达 · 刘畅 · 刘正扬　|　青岛城市学院 · 企业项目实战实训
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', flexDirection: 'column' }}>
+    <Box style={{ height: 64, background: '#1E4FA8', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>云购生活新零售企业——企业级数据仓库与经营分析可视化系统</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, opacity: 0.85 }}>04 工程化与总结</Text>
+    </Box>
+    <Box style={{ padding: '22px 40px 0' }}>
+        <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#0E3F8C' }}>工程化实践与项目复盘</Text>
+        <Box style={{ height: 1, background: '#D6DCE5', marginTop: 12 }} />
+    </Box>
+    <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', padding: '0 40px', gap: 20 }}>
+        <Box style={{ flexDirection: 'row', gap: 20 }}>
+            {[
+                ['一键部署', '6 服务 Docker Compose 编排，healthcheck 全链路保证启动顺序；密钥经 .env 注入不入库；全链路重建实测 3 分 22 秒，数据自愈演练通过'],
+                ['Git 工程规范', '40+ 提交全部符合约定式规范；双 feature 分支 + 2 次真实 Merge PR（含冲突解决留痕）；3 个里程碑标签；敏感信息检查通过'],
+                ['文档体系', '需求 / 清洗 / 架构 / 部署 / API 五大文档 + 英文 README 国际化版本 + Git 审查报告；每个数字都可追溯到一次实跑'],
+            ].map(([t, d]) => (
+                <Box key={t} style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '20px 24px', flexDirection: 'column', gap: 10 }}>
+                    <Text style={{ fontSize: 23, fontWeight: 'bold', color: '#0E3F8C' }}>{t}</Text>
+                    <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.55 }}>{d}</Text>
+                </Box>
+            ))}
+        </Box>
+        <Box style={{ flexDirection: 'row', gap: 20 }}>
+            {[
+                ['压测验证', '分区裁剪 4.90s vs 全表 5.37s；并发 1→8 吞吐 0.22→0.85 qps，系统在压力下保持稳定'],
+                ['AI 协同', '五周 40+ 条 AI 协同日志留痕：AI 生成代码经人审核合入，AI 也会犯口径错误，批判性使用是前提'],
+            ].map(([t, d]) => (
+                <Box key={t} style={{ flex: 1, background: '#F0F5FC', border: '1px solid #3D7BD9', borderRadius: 10, padding: '16px 24px', flexDirection: 'column', gap: 8 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0E3F8C' }}>{t}</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.5 }}>{d}</Text>
+                </Box>
+            ))}
+        </Box>
+    </Box>
+    <Box style={{ margin: '0 40px 14px', background: '#1E4FA8', borderRadius: 8, padding: '11px 26px' }}>
+        <Text style={{ fontSize: 18, color: '#FFFFFF', fontWeight: 'bold' }}>
+            复盘共识：最大的收获不是"会用 Hive"，而是完成了到"能交付可复现、可追溯、可展示的数据系统"的转变
         </Text>
     </Box>
-    <Box style={{ height: 88, background: '#1E4FA8' }} />
+    <Box style={{ height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>云购生活数据仓库 · 200A</Text>
+        <Text style={{ fontSize: 14, color: '#1E4FA8' }}>16</Text>
+    </Box>
 </Slide>

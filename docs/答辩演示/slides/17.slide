@@ -1,0 +1,15 @@
+<Slide style={{ width: 1280, height: 720, background: '#F7F9FC', flexDirection: 'column' }}>
+    <Box style={{ height: 88, background: '#1E4FA8' }} />
+    <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 24, padding: '0 60px' }}>
+        <Text style={{ fontSize: 60, fontWeight: 'bold', color: '#0E3F8C' }}>感谢聆听 · 恳请评审提问</Text>
+        <Box style={{ height: 3, width: 160, background: '#1E4FA8' }} />
+        <Text style={{ fontSize: 22, color: '#4A5568', textAlign: 'center', lineHeight: 1.7 }}>
+            演示路线：数据链路 → 四层数仓 → 预测模型 → NL2SQL 问答 → 可视化大屏 → 一键部署<br />
+            欢迎现场指定任意环节实测复现
+        </Text>
+        <Text style={{ fontSize: 18, color: '#8B97A8' }}>
+            团队 200A　|　陈劲松 · 王志达 · 刘畅 · 刘正扬　|　青岛城市学院 · 企业项目实战实训
+        </Text>
+    </Box>
+    <Box style={{ height: 88, background: '#1E4FA8' }} />
+</Slide>

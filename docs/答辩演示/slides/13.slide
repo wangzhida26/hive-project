@@ -12,7 +12,7 @@
             {[
                 ['Superset 仪表板', '6 图表 + 日期筛选器，REST API 全自动配置（会话 → JWT → CSRF 组合鉴权），环境重建后 5 分钟仪表板自动就绪'],
                 ['ECharts 数据大屏', '1920×1080 scale 自适应，KPI 卡 + 7 图表，中国地图使用阿里 DataV 审批 GeoJSON，全部资源离线 vendor 化，单 HTML 可开'],
-                ['Streamlit 问答应用', '提问 → NL2SQL → 结果 → 自动图表的完整闭环，容器化交付，与仪表板共用同一 MySQL 镜像口径'],
+                ['Streamlit 问答应用', '提问 → NL2SQL → 指标卡 → 意图感知自动图表完整闭环：7 类图型按结果集形状与问题意图自动匹配，中国地图省份染色 + 南海诸岛合规呈现，支持一键导出 CSV'],
             ].map(([t, d]) => (
                 <Box key={t} style={{ background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '16px 22px', flexDirection: 'column', gap: 6 }}>
                     <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#1E4FA8' }}>{t}</Text>

@@ -14,7 +14,7 @@
                 ['2', '双引擎解析', '规则引擎兜底 + LangChain 链路语义增强'],
                 ['3', 'SQL 护栏', '表名/字段白名单校验，拒绝越权与全表扫描'],
                 ['4', '双执行后端', 'NL2SQL_BACKEND=hive（beeline）/ mysql（报表镜像库）'],
-                ['5', '结果直出', '数值 + 表格 + Plotly 自动图表'],
+                ['5', '意图感知可视化', '图表引擎按问题意图 + 结果集形状自动匹配 7 类图型（趋势线 / 柱状 / 饼图 / 中国地图等）'],
             ].map(([n, t, d]) => (
                 <Box key={n} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '12px 18px' }}>
                     <Box style={{ width: 40, height: 40, background: '#1E4FA8', borderRadius: 8, alignItems: 'center', justifyContent: 'center' }}>
@@ -36,7 +36,7 @@
             <Box style={{ background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 10, padding: '18px 24px', flexDirection: 'column', gap: 8 }}>
                 <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0E3F8C' }}>工程化保障</Text>
                 <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.55 }}>
-                    schema 自动抽取（表结构 + 中文注释）；12 问批量实测日志留痕；无 LLM Key 时规则引擎全量兜底可用，有 Key 时语义增强
+                    schema 自动抽取（表结构 + 中文注释）；12 问批量实测日志留痕；无 LLM Key 时规则引擎全量兜底可用，有 Key 时语义增强；数值轴统一中文「万 / 亿」格式
                 </Text>
             </Box>
         </Box>

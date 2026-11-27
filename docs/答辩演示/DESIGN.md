@@ -18,7 +18,7 @@
 | assets/fig_gmv_trend.png | GMV 趋势与 7 天预测图（真实输出） | P10 预测建模 |
 | assets/fig_test_fit.png | 预测模型测试集拟合图（真实输出） | P10 预测建模 |
 
-## 逐页设计（16 页）
+## 逐页设计（17 页）
 
 | # | title | type | role | rhythm | layout | visual | anti_pattern | description |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -33,12 +33,13 @@
 | 9 | 星型模型与分层 | content | supporting | valley | 左表格右要点 | 无图 | 禁表格铺满无结论 | DWD事实表+4维表设计（粒度/分区/ORC），DWS五粒度+ADS六集市一句话，分区裁剪4.90s vs 5.37s |
 | 10 | 03 AI 分析与可视化 | section | transition | transition | 大数字+标题+要点 | 无图 | 禁四卡片预览 | 章节号03+预测/NL2SQL/三端可视化要点 |
 | 11 | KPI 与预测建模 | content | supporting | peak | 双图横排+指标锚点 | fig_gmv_trend.png + fig_test_fit.png | 禁图表无洞察 | 11项KPI口径统一，3模型+2基线对比（ Holt 最优），7天预测与MAE/MAPE |
-| 12 | NL2SQL 智能问答 | content | supporting | valley | 左流程右数据卡 | 无图 | 禁虚构演示数据 | 规则+LangChain双引擎、SQL护栏、双执行后端，12问实测通过，GMV 24,805,594.44 实测示例 |
-| 13 | 三端可视化 | content | hero | peak | 大图配文 | screen_shot.png 占右58% | 禁空卡片 | Superset 6图表仪表板 / ECharts大屏合规地图 / Streamlit问答闭环，大屏截图为锚 |
+| 12 | NL2SQL 智能问答 | content | supporting | valley | 左流程右数据卡 | 无图 | 禁虚构演示数据 | 规则+LangChain双引擎、SQL护栏、双执行后端、意图感知图表引擎（7类图型），12问实测通过，GMV 24,805,594.44 实测示例 |
+| 13 | 三端可视化 | content | hero | peak | 大图配文 | screen_shot.png 占右58% | 禁空卡片 | Superset 6图表仪表板 / ECharts大屏合规地图 / Streamlit问答+意图感知自动图表闭环（7类图型、中国地图染色、南海诸岛合规、CSV导出），大屏截图为锚 |
 | 14 | 04 工程化与总结 | section | transition | transition | 大数字+标题+要点 | 无图 | 禁四卡片预览 | 章节号04+一键部署/Git规范/文档体系要点 |
-| 15 | 工程化实践与复盘 | content | supporting | valley | 三栏并列卡+底部结论条 | 无图 | 禁深蓝实色卡多张 | 一键部署（6服务healthcheck、3m22s重建）、Git规范（40+提交/2 PR/3标签/冲突留痕）、文档体系（5大文档+英文README），反思一句 |
-| 16 | 感谢页 | ending | hero | peak | 中央致谢+问答引导 | 无图 | 禁烟花装饰 | 感谢聆听+恳请评审提问+团队署名 |
+| 15 | 难点攻坚与实训心得 | content | supporting | valley | 2×2故障卡+四方法论条+结论条 | 无图 | 禁深蓝实色卡多张 | 四个真实故障（HiveServer2 pid残留 / Superset 422三重因 / ODS翻倍31,200 / GeoJSON环方向）各按"现象→定位→修复"呈现；底部方法论：日志先行·最小复现·逐层核对·幂等固化 |
+| 16 | 工程化实践与复盘 | content | supporting | valley | 三栏并列卡+底部结论条 | 无图 | 禁深蓝实色卡多张 | 一键部署（6服务healthcheck、3m22s重建）、Git规范（40+提交/2 PR/3标签/冲突留痕）、文档体系（5大文档+英文README），压测验证+AI协同，反思一句 |
+| 17 | 感谢页 | ending | hero | peak | 中央致谢+问答引导 | 无图 | 禁烟花装饰 | 感谢聆听+恳请评审提问+团队署名 |
 
 ## 叙事节奏
 
-transition(P3/7/10/14) → valley 内容页支撑 → P11/P13 两个 peak（真实图表与大屏截图高潮），符合学术答辩"证据驱动、全篇克制、局部高潮"。
+transition(P3/7/10/14) → valley 内容页支撑 → P11/P13 两个 peak（真实图表与大屏截图高潮），P15 难点攻坚承接评委追问，符合学术答辩"证据驱动、全篇克制、局部高潮"。

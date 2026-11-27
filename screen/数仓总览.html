@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>后端数仓总览 · 云购生活数据仓库</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #F0F5FC; color: #1A2230; padding-bottom: 60px; }
+  .topbar { background: #1E4FA8; color: #fff; padding: 14px 40px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar h1 { font-size: 20px; }
+  .topbar span { font-size: 14px; opacity: .85; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 24px 24px 0; }
+  h2 { font-size: 22px; color: #0E3F8C; margin: 26px 0 6px; }
+  .rule { height: 1px; background: #D6DCE5; margin-bottom: 16px; }
+  /* 分层流水线 */
+  .pipeline { display: flex; gap: 8px; align-items: stretch; margin: 8px 0 4px; }
+  .stage { flex: 1; background: #fff; border: 1px solid #D6DCE5; border-top: 4px solid #1E4FA8; border-radius: 8px; padding: 12px 14px; }
+  .stage .name { font-size: 17px; font-weight: bold; color: #0E3F8C; }
+  .stage .desc { font-size: 12.5px; color: #4A5568; margin-top: 3px; line-height: 1.45; }
+  .stage .num { font-size: 20px; font-weight: bold; color: #1E4FA8; margin-top: 6px; }
+  .stage .cap { font-size: 11.5px; color: #8B97A8; }
+  .arrow { align-self: center; color: #3D7BD9; font-size: 22px; font-weight: bold; }
+  /* 指标卡 */
+  .kpis { display: flex; gap: 14px; margin-top: 10px; }
+  .kpi { flex: 1; background: #0E3F8C; border-radius: 10px; padding: 14px 18px; color: #fff; }
+  .kpi .v { font-size: 24px; font-weight: bold; }
+  .kpi .t { font-size: 13px; opacity: .85; margin-top: 2px; }
+  /* 表清单 */
+  .layers { display: flex; flex-direction: column; gap: 12px; }
+  .layer { background: #fff; border: 1px solid #D6DCE5; border-radius: 10px; overflow: hidden; }
+  .layer .head { background: #F7F9FC; padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #D6DCE5; }
+  .layer .head b { color: #0E3F8C; font-size: 16px; }
+  .layer .head span { font-size: 12.5px; color: #8B97A8; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .tbl th { background: #F0F5FC; color: #4A5568; text-align: left; padding: 7px 18px; font-weight: 600; border-bottom: 1px solid #D6DCE5; }
+  .tbl td { padding: 7px 18px; border-bottom: 1px solid #EDF1F7; color: #1A2230; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl td.num { text-align: right; font-variant-numeric: tabular-nums; color: #1E4FA8; font-weight: 600; }
+  .tag { display: inline-block; background: #E8EFF8; color: #0E3F8C; border-radius: 4px; padding: 1px 8px; font-size: 12px; margin-right: 6px; }
+  .note { background: #FFFBEB; border: 1px solid #F2E4B8; border-radius: 8px; padding: 10px 16px; font-size: 13px; color: #7A5A00; margin-top: 14px; line-height: 1.6; }
+  .foot { text-align: center; color: #8B97A8; font-size: 12.5px; margin-top: 26px; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>云购生活数据仓库 · 后端总览（Hive 4.0 实测）</h1>
+  <span>团队 200A · 王志达 ｜ 数据核对基准：2026-11-23 一致性核对 + 当日复测</span>
+</div>
+<div class="wrap">
+
+  <h2>① 数据流向：ODS → STG → DWD → DWS → ADS</h2>
+  <div class="rule"></div>
+  <div class="pipeline">
+    <div class="stage"><div class="name">ODS 贴源层</div><div class="desc">6 张外部表，CSV 原样入仓留证</div><div class="num">15,600</div><div class="cap">ods_order 订单</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="name">STG 三站清洗</div><div class="desc">stg1 去重 → stg2 规范 → stg3 大额过滤</div><div class="num">−904</div><div class="cap">600 冗余 + 304 大额</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="name">DWD 明细层</div><div class="desc">5 维 1 事实，动态分区 366 天</div><div class="num">14,696</div><div class="cap">dwd_order 有效订单</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="name">DWS 汇总层</div><div class="desc">5 粒度日汇总 + 用户聚合</div><div class="num">366 天</div><div class="cap">全量口径 3,702.79 万</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="name">ADS 应用层</div><div class="desc">7 张集市表，供三端消费</div><div class="num">2,480.56 万</div><div class="cap">有效 GMV</div></div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v">¥24,805,594.44</div><div class="t">有效 GMV（已支付+已完成）</div></div>
+    <div class="kpi"><div class="v">9,803</div><div class="t">有效订单量</div></div>
+    <div class="kpi"><div class="v">¥2,530.41</div><div class="t">客单价 AOV</div></div>
+    <div class="kpi"><div class="v">1,000</div><div class="t">活跃用户数</div></div>
+    <div class="kpi"><div class="v">5.42%</div><div class="t">退款率</div></div>
+  </div>
+
+  <h2>② 分层表清单与实测行数</h2>
+  <div class="rule"></div>
+  <div class="layers">
+
+    <div class="layer">
+      <div class="head"><b>ODS · 贴源层（ydsh_ods，外部表）</b><span>CSV 原样加载，保留全部原始痕迹</span></div>
+      <table class="tbl">
+        <tr><th>表名</th><th>内容</th><th style="text-align:right">实测行数</th></tr>
+        <tr><td>ods_order</td><td>订单主表（含 600 条重复冗余，用于清洗考核）</td><td class="num">15,600</td></tr>
+        <tr><td>ods_order_item</td><td>订单明细行</td><td class="num">37,549</td></tr>
+        <tr><td>ods_user</td><td>用户主数据</td><td class="num">1,000</td></tr>
+        <tr><td>ods_product</td><td>商品主数据</td><td class="num">600</td></tr>
+        <tr><td>ods_store</td><td>门店主数据</td><td class="num">60</td></tr>
+        <tr><td>ods_user_behavior</td><td>用户行为流水</td><td class="num">60,000</td></tr>
+      </table>
+    </div>
+
+    <div class="layer">
+      <div class="head"><b>DWD · 明细层（ydsh_dwd）</b><span>5 维表 + 2 事实表；stg1/stg2/stg3 三站中间表同库留痕</span></div>
+      <table class="tbl">
+        <tr><th>表名</th><th>内容</th><th style="text-align:right">实测行数</th></tr>
+        <tr><td><span class="tag">事实</span>dwd_order</td><td>订单事实表，按 dt 动态分区，ORC 存储</td><td class="num">14,696</td></tr>
+        <tr><td><span class="tag">事实</span>dwd_order_item</td><td>订单明细事实表</td><td class="num">37,549</td></tr>
+        <tr><td><span class="tag">维表</span>dim_user</td><td>用户维（含会员等级）</td><td class="num">1,000</td></tr>
+        <tr><td><span class="tag">维表</span>dim_product</td><td>商品维（含一级品类）</td><td class="num">600</td></tr>
+        <tr><td><span class="tag">维表</span>dim_store</td><td>门店维（省市区）</td><td class="num">60</td></tr>
+        <tr><td><span class="tag">维表</span>dim_date</td><td>日期维（2024 闰年全年）</td><td class="num">366</td></tr>
+        <tr><td><span class="tag">维表</span>dim_pay_type / dim_member_level</td><td>支付方式维 / 会员等级维</td><td class="num">—</td></tr>
+        <tr><td><span class="tag">分区</span>dwd_order.dt</td><td>动态分区数（2024 全年每天一区）</td><td class="num">366</td></tr>
+      </table>
+    </div>
+
+    <div class="layer">
+      <div class="head"><b>DWS · 汇总层（ydsh_dws）</b><span>5 粒度日汇总 + 用户聚合；全量口径（不做状态过滤）</span></div>
+      <table class="tbl">
+        <tr><th>表名</th><th>粒度 / 内容</th><th style="text-align:right">GMV 口径</th></tr>
+        <tr><td>dws_order_1d</td><td>订单日汇总（366 天，orders 合计 14,696 与 DWD 闭环）</td><td>3,702.79 万（全量）</td></tr>
+        <tr><td>dws_category_1d</td><td>品类 × 日</td><td>9,728.93 万（明细行）</td></tr>
+        <tr><td>dws_store_1d</td><td>门店 × 日</td><td>—</td></tr>
+        <tr><td>dws_channel_1d</td><td>渠道 × 日</td><td>—</td></tr>
+        <tr><td>dws_user_agg</td><td>用户全期聚合</td><td>—</td></tr>
+      </table>
+    </div>
+
+    <div class="layer">
+      <div class="head"><b>ADS · 应用层（ydsh_ads）</b><span>7 张集市表，同时供 Hive 原始层与 MySQL 镜像层双后端消费</span></div>
+      <table class="tbl">
+        <tr><th>表名</th><th>内容</th><th style="text-align:right">行数</th></tr>
+        <tr><td>ads_kpi_overview</td><td>经营大盘 KPI（GMV 2,480.56 万，与 DWD 直聚三方对账一致）</td><td class="num">1</td></tr>
+        <tr><td>ads_gmv_daily</td><td>日 GMV 趋势（含 7 日移动平均）</td><td class="num">366</td></tr>
+        <tr><td>ads_category_sales</td><td>品类销售排行（Top1 运动户外 15.38%）</td><td class="num">8</td></tr>
+        <tr><td>ads_store_sales</td><td>门店排行（Top1 开封社区店 133.39 万）</td><td class="num">60</td></tr>
+        <tr><td>ads_channel_sales</td><td>渠道 × 支付方式</td><td class="num">—</td></tr>
+        <tr><td>ads_province_geo</td><td>省份地理分布（供地图渲染）</td><td class="num">—</td></tr>
+        <tr><td>ads_user_value</td><td>用户价值分层</td><td class="num">—</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="note">
+    <b>口径说明（答辩备查）</b>：① ADS「有效 GMV」= 已支付 + 已完成订单 = 24,805,594.44；DWS 汇总为<b>全量状态口径</b>（3,702.79 万），差异 = 退款/未支付金额，属设计使然，已在《指标口径对照表》明确。
+    ② 品类表为<b>明细行金额口径</b>（含全状态订单），用于结构占比分析，与 KPI 有效口径不可直接相加。
+    ③ 对账闭环：15,600 − 600（去重）− 304（大额过滤）= 14,696 ✅。
+  </div>
+
+  <div class="foot">
+    本页全部数字来自容器内 beeline / mysql 实跑结果（复测日期 2026-11-27）· 详见 docs/第5周_数据一致性核对报告.md<br>
+    双后端验证：Hive（beeline → HiveServer2:10000）与 MySQL 镜像（metastore-mysql:3307）GMV 完全一致 = 24,805,594.44
+  </div>
+</div>
+</body>
+</html>
